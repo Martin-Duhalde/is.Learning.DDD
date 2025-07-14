@@ -34,6 +34,13 @@ https://localhost:7263/swagger
 https://localhost:7263/swagger/index.html
 ```
 
+Acceder a Scalar:
+
+```
+https://localhost:7263/scalar
+https://localhost:7263/openapi/v1.json
+```
+
 Salud y disponibilidad:
 
 ```
@@ -80,13 +87,36 @@ dotnet test --collect:"XPlat Code Coverage"
 ## 🔐 Autenticación y autorización
 
 - Registro/Login con JWT
+- Autenticación basada en tokens con configuración segura.
+- ASP.NET Core Identity
+– Manejo de usuarios, roles (`Admin`, `User`) y claims con sembrado inicial (`Seeder`).
 - Rutas por rol (`[Authorize(Roles = "Admin")]`)
 - Rutas públicas (`[AllowAnonymous]`)
+
+### 📦 Base de datos
+- **EF Core (Entity Framework Core)** – ORM con Code-First y soporte para múltiples proveedores:
+  - SQL Server
+  - PostgreSQL
+  - SQLite (usado en GitHub Actions)
+
+### 🧪 Validaciones y comportamiento
+- **FluentValidation** – Validación declarativa para DTOs y comandos.
+- **Pipeline de validación en MediatR** – Interceptor para aplicar validaciones automáticamente.
+
+### 🧰 Servicios y herramientas
+- **AutoMapper** – Mapeo entre entidades y DTOs.
+- **Serilog** – Logging estructurado configurable desde `appsettings.json`.
+- **Swagger + Scalar** – Documentación interactiva de la API:
+  - `/swagger`, `/openapi/v1.json`, `/scalar`
+
+### 📧 Servicios de correo electrónico
+> Inspired by the [`Clean.Architecture.Infrastructure`](https://github.com/ardalis/CleanArchitecture) project by Ardalis.
+- Abstracción con `IEmailService`, implementaciones intercambiables (`FakeEmailSender`, `MimeKitEmailSender`).
 
 ---
 
 ## 📈 Observabilidad
-
+> Inspired by the [`Clean.Architecture.Infrastructure`](https://github.com/ardalis/CleanArchitecture) project by Ardalis.
 - ✅ Endpoints de salud: `/health`, `/alive`
 - ✅ Trazas vía OpenTelemetry (ASP.NET y HttpClient)
 - ✅ Logs centralizados con Serilog (consola + archivo)

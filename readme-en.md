@@ -34,6 +34,13 @@ https://localhost:7263/swagger
 https://localhost:7263/swagger/index.html
 ```
 
+Access Scalar UI:
+
+```
+https://localhost:7263/scalar
+https://localhost:7263/openapi/v1.json
+```
+
 Health & readiness:
 
 ```
@@ -77,11 +84,50 @@ dotnet test --collect:"XPlat Code Coverage"
 
 ---
 
-## 🔐 Auth & Authorization
+## 🔐 Authentication and Authorization
 
-- Login/Register with JWT
-- Role-based routes (`[Authorize(Roles = "Admin")]`)
-- Anonymous routes (`[AllowAnonymous]`)
+- User registration and login using **JWT tokens**.
+- Secure, token-based authentication with robust configuration.
+- **ASP.NET Core Identity** for user, role (`Admin`, `User`), and claims management with seeding via a `Seeder`.
+- Role-based route protection using `[Authorize(Roles = "Admin")]`.
+- Public routes allowed with `[AllowAnonymous]`.
+
+---
+
+## 📦 Database Providers
+
+- **EF Core (Entity Framework Core)** – Code-First ORM with support for multiple database engines:
+  - **SQL Server**
+  - **PostgreSQL**
+  - **SQLite** (used for automated builds in GitHub Actions)
+
+> The database provider can be configured via `appsettings.json` using the `DatabaseProvider` key.
+
+---
+
+## 🧪 Validation and Behavior
+
+- **FluentValidation** – Declarative validation for DTOs and use-case commands.
+- **Validation Pipeline** with MediatR – Automatically applies validators before command handlers.
+
+---
+
+## 🧰 Services and Utilities
+
+- **AutoMapper** – Maps between domain entities and DTOs.
+- **Serilog** – Structured logging, configurable via `appsettings.json`, with console and file output.
+- **Swagger + Scalar** – Interactive API documentation:
+  - `/swagger`, `/openapi/v1.json`, `/scalar`
+
+---
+
+## 📧 Email Services
+
+> Inspired by the [`Clean.Architecture.Infrastructure`](https://github.com/ardalis/CleanArchitecture) project by Ardalis.
+
+- Abstraction via `IEmailService` with interchangeable implementations:
+  - `FakeEmailSender` for testing
+  - `MimeKitEmailSender` for real email delivery
 
 ---
 
@@ -109,3 +155,6 @@ dotnet ef database update \
 ```
 
 ---
+
+**Author / Autor**: Martín Duhalde + ChatGPT (2025)
+

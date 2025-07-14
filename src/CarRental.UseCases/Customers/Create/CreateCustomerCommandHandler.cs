@@ -9,8 +9,8 @@ namespace CarRental.UseCases.Customers.Create;
 
 public class CreateCustomerCommand : IRequest<Guid>
 {
-    public string FullName { get; set; } = null!;
-    public string Address { get; set; } = null!;
+    public string FullName  /**/ { get; set; } = null!;
+    public string Address   /**/ { get; set; } = null!;
 }
 
 public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, Guid>
@@ -26,9 +26,9 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
     {
         var customer = new Customer
         {
-            Id = Guid.NewGuid(),
-            FullName = request.FullName,
-            Address = request.Address
+            Id          /**/ = Guid.NewGuid(),
+            FullName    /**/ = request.FullName,
+            Address     /**/ = request.Address
         };
 
         _db.Customers.Add(customer);

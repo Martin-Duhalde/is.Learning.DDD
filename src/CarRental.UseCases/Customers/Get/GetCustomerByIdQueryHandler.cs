@@ -31,9 +31,9 @@ public class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByIdQuery,
 
         return new CustomerDto
         {
-            Id = customer.Id,
-            FullName = customer.FullName,
-            Address = customer.Address
+            Id          /**/ = customer.Id,
+            FullName    /**/ = customer.FullName,
+            Address     /**/ = customer.Address
         };
     }
 }

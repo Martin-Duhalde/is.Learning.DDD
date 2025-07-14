@@ -25,9 +25,9 @@ public class GetCustomersQueryHandler : IRequestHandler<GetCustomersQuery, List<
         return await _db.Customers
             .Select(c => new CustomerDto
             {
-                Id = c.Id,
-                FullName = c.FullName,
-                Address = c.Address
+                Id          /**/ = c.Id,
+                FullName    /**/ = c.FullName,
+                Address     /**/ = c.Address
             })
             .ToListAsync(cancellationToken);
     }
