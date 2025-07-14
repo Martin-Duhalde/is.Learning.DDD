@@ -1,0 +1,63 @@
+name: CarRental .NET 9 CI
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      isGitHub: "true"
+      DatabaseProvider: "SQLite_HitHub"
+      ConnectionStrings__SQLite_HitHub: "Data Source=/tmp/CarRental.db"
+
+    steps:
+    - name: ⬇️ Checkout repository
+      uses: actions/checkout@v3
+
+    - name: 🛠 Setup .NET 9 SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: 🚀 Install dotnet-ef tool version 9.0.6
+      run: |
+        dotnet tool install --global dotnet-ef --version 9.0.6 || dotnet tool update --global dotnet-ef --version 9.0.6
+        echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+    - name: 📦 Restore dependencies
+      run: dotnet restore ./CarRental.sln
+
+    - name: 🔨 Build solution
+      run: dotnet build ./CarRental.sln --configuration Release --no-restore
+
+    - name: 🧱 Apply EF Core migrations on SQLite
+      run: |
+        mkdir -p /tmp
+        dotnet ef database update \
+          --project src/CarRental.Infrastructure/CarRental.Infrastructure.csproj \
+          --startup-project src/CarRental.API/CarRental.API.csproj \
+          --configuration Release \
+          --no-build \
+          -- --connection "Data Source=/tmp/CarRental.db"
+      shell: bash
+
+    - name: 🧪 Run Unit Tests
+      run: dotnet test tests/CarRental.Tests.UseCases/CarRental.Tests.UseCases.csproj --configuration Release --no-build --collect:"XPlat Code Coverage"
+
+    - name: 🔗 Run Integration Tests
+      run: dotnet test tests/CarRental.Tests.Integration/CarRental.Tests.Integration.csproj --configuration Release --no-build --collect:"XPlat Code Coverage"
+
+#    - name: 💻 Run Functional Tests
+#      run: dotnet test tests/CarRental.Tests.Functional/CarRental.Tests.Functional.csproj --configuration Release --no-build --collect:"XPlat Code Coverage"
+
+    - name: ☁️ Upload code coverage results
+      uses: actions/upload-artifact@v4
+      with:
+        name: code-coverage-report
+        path: '**/TestResults/**/*.coverage'

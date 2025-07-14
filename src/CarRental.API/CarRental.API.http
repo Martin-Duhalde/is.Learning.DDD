@@ -1,0 +1,93 @@
+﻿@CarRental.API_HostAddress = http://localhost:7263
+
+
+### 🔐 Register a new user
+POST https://localhost:7263/api/auth/register
+Content-Type: application/json
+
+{
+  "fullName": "Jane Doe",
+  "email": "jane@example.com",
+  "password": "My$ecurePassword1"
+}
+
+### 🔐 Login
+POST https://localhost:7263/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "jane@example.com",
+  "password": "My$ecurePassword1"
+}
+
+### 🧪 Public endpoint (no token required)
+GET https://localhost:7263/api/authtest/public
+
+### 🧪 Protected: Requires 'User' role
+GET https://localhost:7263/api/authtest/user
+Authorization: Bearer {{jwt}}
+
+### 🧪 Protected: Requires 'Admin' role
+GET https://localhost:7263/api/authtest/admin
+Authorization: Bearer {{jwt}}
+
+### 🚗 Check car availability
+GET https://localhost:7263/api/rental/availability?startDate=2025-07-15&endDate=2025-07-20&type=SUV&model=Toyota
+Authorization: Bearer {{jwt}}
+
+### 🚗 Create a new rental
+POST https://localhost:7263/api/rental
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+{
+  "customerId": "00000000-0000-0000-0000-000000000001",
+  "carId": "00000000-0000-0000-0000-000000000002",
+  "startDate": "2025-07-16",
+  "endDate": "2025-07-20"
+}
+
+### 🚗 Modify rental
+PUT https://localhost:7263/api/rental/00000000-0000-0000-0000-000000000003
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+{
+  "rentalId": "00000000-0000-0000-0000-000000000003",
+  "carId": "00000000-0000-0000-0000-000000000002",
+  "startDate": "2025-07-18",
+  "endDate": "2025-07-22"
+}
+
+### 🚗 Cancel rental
+DELETE https://localhost:7263/api/rental/00000000-0000-0000-0000-000000000003
+Authorization: Bearer {{jwt}}
+
+### 🚗 Resend confirmation email
+POST https://localhost:7263/api/rental/00000000-0000-0000-0000-000000000003/resend-confirmation
+Authorization: Bearer {{jwt}}
+
+### 🛠️ Get upcoming services in next 2 weeks
+GET https://localhost:7263/api/service/upcoming-next-two-weeks
+Authorization: Bearer {{jwt}}
+
+### 🛠️ Get upcoming services (custom date range)
+GET https://localhost:7263/api/service/upcoming?from=2025-07-14&to=2025-07-28
+Authorization: Bearer {{jwt}}
+
+### 📊 Dashboard statistics
+GET https://localhost:7263/api/statistics/dashboard
+Authorization: Bearer {{jwt}}
+
+### 📊 Top rented car types
+GET https://localhost:7263/api/statistics/top-car-types?from=2025-07-01&to=2025-07-14
+Authorization: Bearer {{jwt}}
+
+### 📊 Top cars by brand and model
+GET https://localhost:7263/api/statistics/top-cars-by-brand-model?from=2025-07-01&to=2025-07-14
+Authorization: Bearer {{jwt}}
+
+### 📊 Daily usage stats (last 7 days)
+GET https://localhost:7263/api/statistics/daily-usage
+Authorization: Bearer {{jwt}}
+

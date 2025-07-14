@@ -1,0 +1,97 @@
+﻿# Compiled binaries
+bin/
+obj/
+yoga.api/wwwroot/avatars/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build results
+*.dll
+*.exe
+ *.app
+*.log
+# No ignorar la carpeta yoga.app (se incluye en el control de versiones)
+!yoga.app/
+
+# Visual Studio files
+.vscode/
+.vs/
+
+# OS files
+Thumbs.db
+ehthumbs.db
+.DS_Store
+
+# Rider/JetBrains files
+.idea/
+*.sln.iml
+
+# ASP.NET
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+
+# Logs
+logs/
+*.log
+src/CarRental.API/Logs/
+
+
+# Ignorar archivos SQLite en cualquier parte del proyecto (base + temp files)
+*.db
+*.db-shm
+*.db-wal
+*.shm
+*.wal
+
+# Ignorar backups (.bak) en cualquier carpeta
+*.bak
+
+
+# dotnet CLI
+*.pid
+*.svclog
+
+# Nuke Build
+.nuke/
+
+# Coverage
+coverage/
+TestResults/
+*.coverage
+*.coveragexml
+
+# Publish artifacts
+publish/
+dist/
+
+# Node modules (in case of JS integration for frontend or Swagger UI)
+node_modules/
+
+# Environment files
+.env
+.env.*
+
+# EF Core tools
+Migrations/
+src/CarRental.Infrastructure/Logs/
+
+# Docker
+docker-compose.override.yml
+docker-compose.debug.yml
+
+# Local database files
+*.mdf
+*.ldf
+
+# Terraform or Bicep if you're using infrastructure as code
+*.tfstate
+*.tfstate.backup
+*.bicep
+
+# Dependency scanning
+packages.lock.json
