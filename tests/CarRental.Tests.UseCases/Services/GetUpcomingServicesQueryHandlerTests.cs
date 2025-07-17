@@ -202,4 +202,19 @@ public class GetUpcomingServicesQueryHandlerTests
         Assert.Equal("TypeB", second.Type);
         Assert.Equal(from.AddDays(3), second.Date);
     }
+
+    [Fact]
+    public void should_assign_and_read_car_navigation_property()
+    {
+        var car = new Car { Model = "Civic", Type = "Sedan" };
+        var service = new Service
+        {
+            Date = DateTime.Today,
+            CarId = car.Id,
+            Car = car // <- Esto cubre el setter
+        };
+
+        // Esto cubre el getter
+        Assert.Equal("Civic", service.Car?.Model);
+    }
 }
