@@ -13,10 +13,10 @@ namespace CarRental.Infrastructure.Email
     /// MimeKit is recommended over this now:
     /// https://weblogs.asp.net/sreejukg/system-net-mail-smtpclient-is-not-recommended-anymore-what-is-the-alternative
     /// </summary>
-    public class SmtpEmailSender(ILogger<SmtpEmailSender> logger,
+    public class SmtpEmailSender(ILogger<ISmtpClientWrapper> logger,
                         IOptions<MailserverConfiguration> mailserverOptions) : IEmailService
     {
-        private readonly ILogger<SmtpEmailSender> _logger = logger;
+        private readonly ILogger<ISmtpClientWrapper> _logger = logger;
         private readonly MailserverConfiguration _mailserverConfiguration = mailserverOptions.Value!;
 
         public async Task SendEmailAsync(string to, string from, string subject, string body)

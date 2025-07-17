@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{32161FE7-2
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		.github\workflows\ci.yml = .github\workflows\ci.yml
+		tests\CarRental.Tests.Integration\coverage.runsettings = tests\CarRental.Tests.Integration\coverage.runsettings
 		readme-en.md = readme-en.md
 		readme.md = readme.md
 		report.bat = report.bat

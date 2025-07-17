@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat code coverage">
+        <Configuration>
+          <ExcludeByFile>
+            <!-- Excluir migraciones (incluye subcarpetas como SQLite) -->
+            <File>**/Migrations/*.cs</File>
+            <File>**/Migrations/**/*.cs</File>
+
+            <!-- (Opcional) Excluir DTOs -->
+            <File>**/DTOs/*.cs</File>
+            <File>**/DTOs/**/*.cs</File>
+
+            <!-- (Opcional) Archivos generados automáticamente -->
+            <File>**/*.g.cs</File>
+            <File>**/*.g.i.cs</File>
+          </ExcludeByFile>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>

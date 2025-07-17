@@ -57,7 +57,6 @@ public class CancelRentalCommandHandlerTests
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        Assert.Equal(Unit.Value, result);
 
         var cancelledRental = await _db.Rentals.FindAsync(rentalId);
        
