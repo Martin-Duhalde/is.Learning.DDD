@@ -19,7 +19,7 @@ public class GetAllRentalsQueryHandler : IRequestHandler<GetAllRentalsQuery, Lis
 
     public async Task<List<RentalDto>> Handle(GetAllRentalsQuery request, CancellationToken cancellationToken)
     {
-        var rentals = await _rentalRepo.ListAllAsync(cancellationToken);
+        var rentals = await _rentalRepo.ListAllActivesAsync(cancellationToken);
 
         return rentals.Select(r => new RentalDto
         {

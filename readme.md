@@ -140,5 +140,39 @@ dotnet ef database update \
 
 ---
 
+## Formalización nomenclatura métodos en repositorios (DDD + Clean Architecture)
+## Método		Uso / Significado											Retorno típico			Comentario
+GetByIdAsync	Obtener un único agregado o entidad por su ID				Entidad o null			Busca exacto, obligatorio único
+FindByAsync		Buscar entidad por alguna(s) propiedad(es) específicas		Entidad o null			Puede no existir, búsqueda con filtro(s)
+ListAllAsync	Listar todas las entidades del tipo							Lista de entidades		Sin filtro, paginación opcional
+ListByAsync		Listar entidades filtradas por propiedades					Lista de entidades		Retorna 0 o más entidades, filtro aplicado
+ExistsByAsync	Verificar si existe entidad con propiedades dadas			bool					Ideal para validaciones antes de creación
+AddAsync		Insertar nueva entidad										void / Task				Persistencia
+UpdateAsync		Actualizar entidad											void / Task				Puede incluir control de versión
+DeleteAsync		Eliminar entidad (lógico o físico según implementación)		void / Task	
+
+
+## Conventional Commits 
+feat(car):		allow creation of car with version control
+fix(car):		increment version properly on soft delete
+refactor(car):	extract status logic into enum
+test(car):		add unit tests for CreateCarCommandHandler
+
+## Test Coverage & Report Generator
+[setup] dotnet tool install --global dotnet-reportgenerator-globaltool
+
+[PowerShell] dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults; reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
+[cmd.exe]    dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults && reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
+
+reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
+
+Genera el archivo: ./DDD.CarRental/coveragereport/index.html
+
+## Hithub Actions CI / CD
+
+ci.yml
+
+---
+
 **Author / Autor**: Martín Duhalde + ChatGPT (2025)
 

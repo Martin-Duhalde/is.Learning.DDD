@@ -20,7 +20,7 @@ public class GetRentalByIdQueryHandler : IRequestHandler<GetRentalByIdQuery, Ren
 
     public async Task<RentalDto> Handle(GetRentalByIdQuery request, CancellationToken cancellationToken)
     {
-        var rental = await _rentalRepo.GetByIdAsync(request.RentalId, cancellationToken)
+        var rental = await _rentalRepo.GetActiveByIdAsync(request.RentalId, cancellationToken)
             ?? throw new DomainException("Rental not found.");
 
         return new RentalDto

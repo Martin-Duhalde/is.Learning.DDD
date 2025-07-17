@@ -38,7 +38,7 @@ public class GetDashboardDataQueryHandlerTests
             CarId     /**/ = Guid.NewGuid(),
             StartDate /**/ = today.AddDays(-1),
             EndDate   /**/ = today.AddDays(2),
-            Status    /**/ = RentalStatus.Active
+            RentalStatus    /**/ = RentalStatus.Active
         };
 
         var rental2 = new Rental
@@ -47,7 +47,7 @@ public class GetDashboardDataQueryHandlerTests
             CarId     /**/ = Guid.NewGuid(),
             StartDate /**/ = today.AddDays(-3),
             EndDate   /**/ = today.AddDays(-2),
-            Status    /**/ = RentalStatus.Active
+            RentalStatus    /**/ = RentalStatus.Active
         };
 
         await _db.Rentals.AddRangeAsync(rental1, rental2);

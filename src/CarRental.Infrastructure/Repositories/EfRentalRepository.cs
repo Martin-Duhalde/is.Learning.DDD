@@ -30,7 +30,7 @@ public class EfRentalRepository : EfRepository<Rental>, IRentalRepository
                                 .Where(r =>
                                        r.StartDate >= from &&
                                        r.StartDate <= to &&
-                                       r.Status == RentalStatus.Active)
+                                       r.RentalStatus == RentalStatus.Active)
                                 .ToListAsync(cancellationToken);
     }
 
@@ -56,7 +56,7 @@ public class EfRentalRepository : EfRepository<Rental>, IRentalRepository
     public async Task<List<Rental>> ListCancelledAsync(DateTime from, DateTime to, CancellationToken ct = default)
     {
         return await _db.Rentals.Where(r =>
-                                       r.Status == RentalStatus.Cancelled &&
+                                       r.RentalStatus == RentalStatus.Cancelled &&
                                        r.CancelledAt >= from &&
                                        r.CancelledAt <= to)
                                 .ToListAsync(ct);
@@ -65,7 +65,7 @@ public class EfRentalRepository : EfRepository<Rental>, IRentalRepository
     public async Task<int> CountCancelledAsync(DateTime from, DateTime to, CancellationToken ct = default)
     {
         return await _db.Rentals
-            .Where(r => r.Status == RentalStatus.Cancelled
+            .Where(r => r.RentalStatus == RentalStatus.Cancelled
                      && r.CancelledAt >= from
                      && r.CancelledAt <= to)
             .CountAsync(ct);
@@ -76,7 +76,7 @@ public class EfRentalRepository : EfRepository<Rental>, IRentalRepository
         var rental = await _db.Rentals.FindAsync(new object[] { rentalId }, ct);
         if (rental == null) return;
 
-        rental.Status       /**/ = RentalStatus.Cancelled;
+        rental.RentalStatus       /**/ = RentalStatus.Cancelled;
         rental.CancelledAt  /**/ = DateTime.UtcNow;
 
         _db.Rentals.Update(rental);

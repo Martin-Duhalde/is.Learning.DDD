@@ -23,7 +23,7 @@ public class ModifyRentalCommandHandler : IRequestHandler<ModifyRentalCommand, U
 
     public async Task<Unit> Handle(ModifyRentalCommand request, CancellationToken cancellationToken)
     {
-        var rental = await _rentalRepository.GetByIdAsync(request.RentalId, cancellationToken)
+        var rental = await _rentalRepository.GetActiveByIdAsync(request.RentalId, cancellationToken)
             ?? throw new DomainException("Rental not found.");
 
         var carId = request.NewCarId ?? rental.CarId;

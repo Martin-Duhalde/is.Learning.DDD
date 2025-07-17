@@ -9,5 +9,6 @@ namespace CarRental.Core.Repositories;
 /// </summary>
 public interface ICarRepository : IRepository<Car>
 {
-    Task<bool> IsAvailableAsync(Guid carId, DateTime start, DateTime end, CancellationToken ct = default);
+    Task<bool>                  /**/ IsAvailableAsync           /**/ (Guid carId, DateTime start, DateTime end, CancellationToken ct = default);
+    Task<IReadOnlyList<Car>>    /**/ FindByModelAndTypeAsync    /**/ (string model, string type, CancellationToken ct = default);
 }

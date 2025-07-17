@@ -38,7 +38,7 @@ public class GetAllRentalsQueryHandlerTests
             EndDate     /**/ = DateTime.UtcNow.AddDays(6)
         };
 
-        _rentalRepo.ListAllAsync(Arg.Any<CancellationToken>())
+        _rentalRepo.ListAllActivesAsync(Arg.Any<CancellationToken>())
                    .Returns([rental1, rental2]);
 
         var query = new GetAllRentalsQuery();

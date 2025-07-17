@@ -20,7 +20,7 @@ public class CancelRentalCommandHandler : IRequestHandler<CancelRentalCommand, U
        
     public async Task<Unit> Handle(CancelRentalCommand request, CancellationToken cancellationToken)
     {
-        var rental = await _rentalRepository.GetByIdAsync(request.RentalId, cancellationToken)
+        var rental = await _rentalRepository.GetActiveByIdAsync(request.RentalId, cancellationToken)
             ?? throw new DomainException("Rental not found.");
 
         await _rentalRepository.CancelAsync(request.RentalId, cancellationToken);

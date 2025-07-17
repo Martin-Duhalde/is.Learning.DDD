@@ -31,4 +31,12 @@ public class UpdateRentalDto
     /// <example>2025-07-20T10:00:00Z</example>
     [Required]
     public DateTime EndDate { get; set; }
+
+    /// <summary>
+    /// Concurrency version number of the car entity, used for optimistic concurrency control.
+    /// Incremented automatically on each update to detect conflicting changes.
+    /// </summary>
+    /// <example>3</example>
+    [Required(ErrorMessage = "Version is required.")]
+    public int Version { get; set; }
 }

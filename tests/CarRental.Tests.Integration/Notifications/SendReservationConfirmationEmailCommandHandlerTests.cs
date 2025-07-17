@@ -96,7 +96,7 @@ public class SendReservationConfirmationEmailCommandHandlerTests
             Car = car,
             StartDate = DateTime.UtcNow.Date,
             EndDate = DateTime.UtcNow.Date.AddDays(3),
-            Status = RentalStatus.Active
+            RentalStatus = RentalStatus.Active
         };
 
         // Insertar en la DB InMemory

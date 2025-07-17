@@ -1,5 +1,6 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 
+using CarRental.Domain.Exceptions;
 using CarRental.Infrastructure.Databases;
 
 using MediatR;
@@ -8,7 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CarRental.UseCases.Customers.Update;
 
-public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand>
+public record UpdateCustomerCommand(Guid Id, string FullName, string Address) : IRequest<Unit>;
+
+public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand, Unit>
 {
     private readonly CarRentalDbContext _db;
 
@@ -21,17 +24,12 @@ public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerComman
     {
         var customer = await _db.Customers.FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
         if (customer == null)
-            throw new KeyNotFoundException("Customer not found");
+            throw new DomainException("Customer not found");
 
-        customer.FullName = request.FullName;
-        customer.Address = request.Address;
+        customer.FullName   /**/ = request.FullName;
+        customer.Address    /**/ = request.Address;
 
         await _db.SaveChangesAsync(cancellationToken);
         return Unit.Value;
-    }
-
-    Task IRequestHandler<UpdateCustomerCommand>.Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
-    {
-        return Handle(request, cancellationToken);
     }
 }

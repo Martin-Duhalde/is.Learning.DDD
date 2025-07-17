@@ -24,4 +24,11 @@ public class EfServiceRepository : EfRepository<Service>, IServiceRepository
             ))
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<List<Service>> FindActivesByCarAndDateAsync(Guid carId, DateTime date, CancellationToken cancellationToken = default)
+    {
+        return await _db.Services
+            .Where(s => s.CarId == carId && s.Date.Date == date.Date && s.IsActive)
+            .ToListAsync(cancellationToken);
+    }
 }

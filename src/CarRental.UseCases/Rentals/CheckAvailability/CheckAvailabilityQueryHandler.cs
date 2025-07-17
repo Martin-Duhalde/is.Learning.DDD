@@ -20,7 +20,7 @@ namespace CarRental.UseCases.Rentals.CheckAvailability
 
         public async Task<List<CarAvailabilityDto>> Handle(CheckAvailabilityQuery request, CancellationToken cancellationToken)
         {
-            var allCars = await _carRepository.ListAllAsync(cancellationToken);
+            var allCars = await _carRepository.ListAllActivesAsync(cancellationToken);
 
             var filtered = allCars
                 .Where(c => c.Type == request.Type && c.Model == request.Model)

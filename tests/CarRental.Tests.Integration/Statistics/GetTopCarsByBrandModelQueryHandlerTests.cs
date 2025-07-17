@@ -38,9 +38,9 @@ public class GetTopCarsByBrandModelQueryHandlerTests
 
         await _db.Cars.AddRangeAsync(car1, car2);
 
-        var rental1 = new Rental { Id = Guid.NewGuid(), CarId = car1.Id, Car = car1, StartDate = from.AddDays(1), EndDate = to, Status = RentalStatus.Active };
-        var rental2 = new Rental { Id = Guid.NewGuid(), CarId = car1.Id, Car = car1, StartDate = from.AddDays(2), EndDate = to, Status = RentalStatus.Active };
-        var rental3 = new Rental { Id = Guid.NewGuid(), CarId = car2.Id, Car = car2, StartDate = from.AddDays(3), EndDate = to, Status = RentalStatus.Active };
+        var rental1 = new Rental { Id = Guid.NewGuid(), CarId = car1.Id, Car = car1, StartDate = from.AddDays(1), EndDate = to, RentalStatus = RentalStatus.Active };
+        var rental2 = new Rental { Id = Guid.NewGuid(), CarId = car1.Id, Car = car1, StartDate = from.AddDays(2), EndDate = to, RentalStatus = RentalStatus.Active };
+        var rental3 = new Rental { Id = Guid.NewGuid(), CarId = car2.Id, Car = car2, StartDate = from.AddDays(3), EndDate = to, RentalStatus = RentalStatus.Active };
 
         await _db.Rentals.AddRangeAsync(rental1, rental2, rental3);
         await _db.SaveChangesAsync();

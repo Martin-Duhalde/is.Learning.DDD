@@ -44,7 +44,7 @@ public class CancelRentalCommandHandlerTests
             CustomerId  /**/ = Guid.NewGuid(),
             StartDate   /**/ = DateTime.UtcNow.AddDays(1),
             EndDate     /**/ = DateTime.UtcNow.AddDays(3),
-            Status      /**/ = RentalStatus.Active,
+            RentalStatus      /**/ = RentalStatus.Active,
             CancelledAt /**/ = null
         };
 
@@ -62,7 +62,7 @@ public class CancelRentalCommandHandlerTests
         var cancelledRental = await _db.Rentals.FindAsync(rentalId);
        
         Assert.NotNull(cancelledRental);
-        Assert.Equal(RentalStatus.Cancelled, cancelledRental.Status);
+        Assert.Equal(RentalStatus.Cancelled, cancelledRental.RentalStatus);
         Assert.NotNull(cancelledRental.CancelledAt);
     }
 

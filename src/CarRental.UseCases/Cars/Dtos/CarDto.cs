@@ -18,4 +18,8 @@ public class CarDto
     /// <summary>Type of the car (e.g., Sedan, SUV).</summary>
     /// <example>Sedan</example>
     public string Type { get; set; } = string.Empty;
+
+    // <summary>Concurrency version of the car entity.</summary>
+    /// <example>3</example>
+    public int Version { get; set; }
 }

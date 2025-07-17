@@ -4,7 +4,7 @@ namespace CarRental.Domain.Entities;
 
 public enum RentalStatus { Active, Cancelled }
 
-public class Rental
+public class Rental : IEntity
 {
     public Guid         /**/ Id             /**/ { get; set; } = Guid.NewGuid();
     public Guid         /**/ CustomerId     /**/ { get; set; } 
@@ -13,6 +13,8 @@ public class Rental
     public Car?         /**/ Car            /**/ { get; set; }
     public DateTime     /**/ StartDate      /**/ { get; set; }
     public DateTime     /**/ EndDate        /**/ { get; set; }
-    public RentalStatus /**/ Status         /**/ { get; set; } = RentalStatus.Active;
+    public RentalStatus /**/ RentalStatus   /**/ { get; set; } = RentalStatus.Active;
     public DateTime?    /**/ CancelledAt    /**/ { get; set; }
+    public bool         /**/ IsActive       /**/ { get; set; } = true;      /// IEntity (logical delete)
+    public int          /**/ Version        /**/ { get; set; } = 1;         /// IEntity: Control de concurrencia con versión incremental
 }

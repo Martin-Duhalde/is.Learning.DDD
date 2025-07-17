@@ -27,7 +27,7 @@ public class CheckAvailabilityQueryHandlerTests
         var car2 = new Car { Id = Guid.NewGuid(), Model = "ModelX", Type = "SUV" };
         var car3 = new Car { Id = Guid.NewGuid(), Model = "Another", Type = "Sedan" };
 
-        _carRepo.ListAllAsync(Arg.Any<CancellationToken>())
+        _carRepo.ListAllActivesAsync(Arg.Any<CancellationToken>())
                 .Returns([car1, car2, car3]);
 
         _carRepo.IsAvailableAsync(car1.Id, start, end, Arg.Any<CancellationToken>())
@@ -55,7 +55,7 @@ public class CheckAvailabilityQueryHandlerTests
         // Arrange
         var car = new Car { Id = Guid.NewGuid(), Model = "Wrong", Type = "Truck" };
 
-        _carRepo.ListAllAsync(Arg.Any<CancellationToken>())
+        _carRepo.ListAllActivesAsync(Arg.Any<CancellationToken>())
                 .Returns([car]);
 
         var query = new CheckAvailabilityQuery(
@@ -76,7 +76,7 @@ public class CheckAvailabilityQueryHandlerTests
         // Arrange
         var car = new Car { Id = Guid.NewGuid(), Model = "ModelX", Type = "SUV" };
 
-        _carRepo.ListAllAsync(Arg.Any<CancellationToken>())
+        _carRepo.ListAllActivesAsync(Arg.Any<CancellationToken>())
                 .Returns([car]);
 
         _carRepo.IsAvailableAsync(car.Id, Arg.Any<DateTime>(), Arg.Any<DateTime>(), Arg.Any<CancellationToken>())

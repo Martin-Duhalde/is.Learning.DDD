@@ -127,7 +127,7 @@ builder.Services.AddMediatR(cfg =>
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(CreateRentalCommandHandler).Assembly);
-    cfg.RegisterServicesFromAssembly(typeof(CarRental.UseCases.Customers.Get.GetCustomersQueryHandler).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CarRental.UseCases.Customers.Get.GetCustomerByIdQueryHandler).Assembly);
 });
 
 /// 🔐 JWT Auth

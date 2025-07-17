@@ -38,7 +38,7 @@ public class CreateRentalCommandHandlerTests
         // Assert
         Assert.NotEqual(Guid.Empty, result);
         await _rentalRepo.Received(1).AddAsync(Arg.Is<Rental>(r =>
-            r.CustomerId    /**/  == command.CustomerId &&
+            r.CustomerId    /**/ == command.CustomerId &&
             r.CarId         /**/ == command.CarId &&
             r.StartDate     /**/ == command.StartDate &&
             r.EndDate       /**/ == command.EndDate

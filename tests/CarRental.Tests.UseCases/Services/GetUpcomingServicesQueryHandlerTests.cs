@@ -1,6 +1,7 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 
 using CarRental.Core.Repositories;
+using CarRental.Domain.Entities;
 using CarRental.UseCases.Services.GetUpcoming;
 
 namespace CarRental.Tests.UseCases.Services;
@@ -164,5 +165,41 @@ public class GetUpcomingServicesQueryHandlerTests
         Assert.Equal("ModelX", dto.Model);
         Assert.Equal("TypeA", dto.Type);
         Assert.Equal(from.AddDays(1), dto.Date);
+    }
+    [Fact]
+    public async Task should_return_upcoming_services_with_car_info()
+    {
+        // Arrange
+        var from = DateTime.UtcNow.Date;
+        var to = from.AddDays(7);
+
+        // Simular servicios con entidad Car asociada
+        var services = new List<(string Model, string Type, DateTime Date, Car Car)>
+        {
+            ("ModelX", "TypeA", from.AddDays(1), new Car { Model = "ModelX", Type = "TypeA" }),
+            ("ModelY", "TypeB", from.AddDays(3), new Car { Model = "ModelY", Type = "TypeB" })
+        };
+
+        // Mock adaptado para retornar solo la tupla esperada (sin Car)
+        _serviceRepo.GetScheduledServicesAsync(from, to, Arg.Any<CancellationToken>())
+                    .Returns(services.Select(s => (s.Model, s.Type, s.Date)).ToList());
+
+        var query = new GetUpcomingServicesQuery(from, to);
+
+        // Act
+        var result = await _handler.Handle(query, CancellationToken.None);
+
+        // Assert
+        Assert.Equal(2, result.Count);
+
+        var first = result[0];
+        Assert.Equal("ModelX", first.Model);
+        Assert.Equal("TypeA", first.Type);
+        Assert.Equal(from.AddDays(1), first.Date);
+
+        var second = result[1];
+        Assert.Equal("ModelY", second.Model);
+        Assert.Equal("TypeB", second.Type);
+        Assert.Equal(from.AddDays(3), second.Date);
     }
 }

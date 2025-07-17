@@ -46,7 +46,7 @@ public class GetDailyUsageQueryHandlerTests
             CarId     /**/ = car1.Id,
             StartDate /**/ = today.AddDays(-1),
             EndDate   /**/ = today.AddDays(2),
-            Status    /**/ = RentalStatus.Active
+            RentalStatus    /**/ = RentalStatus.Active
         };
 
         var rental2 = new Rental
@@ -55,7 +55,7 @@ public class GetDailyUsageQueryHandlerTests
             CarId     /**/ = car2.Id,
             StartDate /**/ = today.AddDays(-3),
             EndDate   /**/ = today.AddDays(-1),
-            Status    /**/ = RentalStatus.Cancelled
+            RentalStatus    /**/ = RentalStatus.Cancelled
         };
 
         await _db.Rentals.AddRangeAsync(rental1, rental2);

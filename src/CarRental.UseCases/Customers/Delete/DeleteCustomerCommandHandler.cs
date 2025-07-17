@@ -1,5 +1,6 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 using CarRental.Core.Repositories;
+using CarRental.Domain.Exceptions;
 
 using MediatR;
 
@@ -18,9 +19,8 @@ namespace CarRental.UseCases.Customers.Delete
 
         public async Task<Unit> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
         {
-            var customer = await _customerRepository.GetByIdAsync(request.Id, cancellationToken);
-            if (customer == null)
-                throw new KeyNotFoundException("Customer not found");
+            var customer = await _customerRepository.GetActiveByIdAsync(request.Id, cancellationToken) 
+                ?? throw new DomainException("Customer not found");
 
             await _customerRepository.DeleteAsync(customer);
 

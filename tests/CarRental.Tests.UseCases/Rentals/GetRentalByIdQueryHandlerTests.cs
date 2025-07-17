@@ -30,7 +30,7 @@ public class GetRentalByIdQueryHandlerTests
             EndDate     /**/ = DateTime.UtcNow.AddDays(5)
         };
 
-        _rentalRepo.GetByIdAsync(rental.Id, Arg.Any<CancellationToken>())
+        _rentalRepo.GetActiveByIdAsync(rental.Id, Arg.Any<CancellationToken>())
                    .Returns(rental);
 
         var query = new GetRentalByIdQuery(rental.Id);
@@ -52,7 +52,7 @@ public class GetRentalByIdQueryHandlerTests
         // Arrange
         var rentalId = Guid.NewGuid();
 
-        _rentalRepo.GetByIdAsync(rentalId, Arg.Any<CancellationToken>())
+        _rentalRepo.GetActiveByIdAsync(rentalId, Arg.Any<CancellationToken>())
                    .Returns((Rental?)null);
 
         var query = new GetRentalByIdQuery(rentalId);

@@ -35,7 +35,7 @@ public class ModifyRentalCommandHandlerTests
         var newEnd      /**/ = DateTime.UtcNow.AddDays(7);
         var newCarId    /**/ = Guid.NewGuid();
 
-        _rentalRepo.GetByIdAsync(rental.Id, Arg.Any<CancellationToken>())
+        _rentalRepo.GetActiveByIdAsync(rental.Id, Arg.Any<CancellationToken>())
                    .Returns(rental);
 
         _carRepo.IsAvailableAsync(newCarId, newStart, newEnd, Arg.Any<CancellationToken>())
@@ -63,7 +63,7 @@ public class ModifyRentalCommandHandlerTests
     public async Task should_throw_if_rental_not_found()
     {
         // Arrange
-        _rentalRepo.GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
+        _rentalRepo.GetActiveByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
                    .Returns((Rental?)null);
 
         var command = new ModifyRentalCommand(
@@ -90,7 +90,7 @@ public class ModifyRentalCommandHandlerTests
             CarId = Guid.NewGuid()
         };
 
-        _rentalRepo.GetByIdAsync(rental.Id, Arg.Any<CancellationToken>())
+        _rentalRepo.GetActiveByIdAsync(rental.Id, Arg.Any<CancellationToken>())
                    .Returns(rental);
 
         var command = new ModifyRentalCommand(
@@ -121,7 +121,7 @@ public class ModifyRentalCommandHandlerTests
         var newEnd      /**/ = DateTime.UtcNow.AddDays(7);
         var newCarId    /**/ = Guid.NewGuid();
 
-        _rentalRepo.GetByIdAsync(rental.Id, Arg.Any<CancellationToken>())
+        _rentalRepo.GetActiveByIdAsync(rental.Id, Arg.Any<CancellationToken>())
                    .Returns(rental);
 
         _carRepo.IsAvailableAsync(newCarId, newStart, newEnd, Arg.Any<CancellationToken>())

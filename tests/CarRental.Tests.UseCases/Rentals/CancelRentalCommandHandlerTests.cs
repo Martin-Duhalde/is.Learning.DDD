@@ -22,7 +22,7 @@ public class CancelRentalCommandHandlerTests
         // Arrange 
         var rentalId = Guid.NewGuid(); /// simulates an existing rental in database
 
-        _rentalRepo.GetByIdAsync(rentalId, Arg.Any<CancellationToken>()) /// NSubstitute Mock Repo IRentalRepository
+        _rentalRepo.GetActiveByIdAsync(rentalId, Arg.Any<CancellationToken>()) /// NSubstitute Mock Repo IRentalRepository
                    .Returns(new Rental { Id = rentalId });
 
         var command = new CancelRentalCommand(rentalId);
@@ -41,7 +41,7 @@ public class CancelRentalCommandHandlerTests
         // Arrange
         var rentalId /**/ = Guid.NewGuid();
 
-        _rentalRepo.GetByIdAsync(rentalId, Arg.Any<CancellationToken>())
+        _rentalRepo.GetActiveByIdAsync(rentalId, Arg.Any<CancellationToken>())
                    .Returns((Rental?)null);
 
         var command = new CancelRentalCommand(

@@ -26,4 +26,12 @@ public class UpdateCarDto
     [Required]
     [StringLength(50)]
     public string Type { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Concurrency version number of the car entity, used for optimistic concurrency control.
+    /// Incremented automatically on each update to detect conflicting changes.
+    /// </summary>
+    /// <example>3</example>
+    [Required(ErrorMessage = "Version is required.")]
+    public int Version { get; set; }
 }

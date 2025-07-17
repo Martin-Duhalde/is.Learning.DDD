@@ -34,7 +34,7 @@ public class GetDailyUsageQueryHandler : IRequestHandler<GetDailyUsageQuery, Lis
         var rentals = await _rentalRepository.ListLast7DaysAsync(cancellationToken);
         
         // Obtener todos los autos
-        var allCars = await _carRepository.ListAllAsync(cancellationToken);
+        var allCars = await _carRepository.ListAllActivesAsync(cancellationToken);
 
         var groupedByDay = rentals
             .GroupBy(r => r.StartDate.Date)
@@ -43,7 +43,7 @@ public class GetDailyUsageQueryHandler : IRequestHandler<GetDailyUsageQuery, Lis
         var data = last7Days.Select(day =>
         {
             var rentalsOfDay    /**/ = groupedByDay.ContainsKey(day) ? groupedByDay[day] : new List<Domain.Entities.Rental>();
-            int cancellations   /**/ = rentalsOfDay.Count(r => r.Status == Domain.Entities.RentalStatus.Cancelled);
+            int cancellations   /**/ = rentalsOfDay.Count(r => r.RentalStatus == Domain.Entities.RentalStatus.Cancelled);
             int rentalsCount    /**/ = rentalsOfDay.Count - cancellations;
 
             // Autos no usados ese día (no rentados ni cancelados)

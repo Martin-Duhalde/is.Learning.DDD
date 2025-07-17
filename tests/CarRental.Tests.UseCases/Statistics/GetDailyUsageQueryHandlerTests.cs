@@ -49,7 +49,7 @@ public class GetDailyUsageQueryHandlerTests
         };
 
         _rentalRepo /**/ .ListLast7DaysAsync    /**/ (Arg.Any<CancellationToken>()).Returns(rentals);
-        _carRepo    /**/ .ListAllAsync          /**/ (Arg.Any<CancellationToken>()).Returns(cars);
+        _carRepo    /**/ .ListAllActivesAsync          /**/ (Arg.Any<CancellationToken>()).Returns(cars);
 
         var command = new GetDailyUsageQuery();
 

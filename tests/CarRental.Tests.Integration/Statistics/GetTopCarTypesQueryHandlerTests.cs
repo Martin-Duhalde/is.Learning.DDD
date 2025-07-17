@@ -46,11 +46,11 @@ public class GetTopCarTypesQueryHandlerTests
 
         var rentals = new List<Rental>
         {
-            new() { Id = Guid.NewGuid(), CarId = suv.Id,   Car = suv,   StartDate = from.AddDays(1), EndDate = to, Status = RentalStatus.Active },
-            new() { Id = Guid.NewGuid(), CarId = suv.Id,   Car = suv,   StartDate = from.AddDays(2), EndDate = to, Status = RentalStatus.Active },
-            new() { Id = Guid.NewGuid(), CarId = sedan.Id, Car = sedan, StartDate = from.AddDays(3), EndDate = to, Status = RentalStatus.Active },
-            new() { Id = Guid.NewGuid(), CarId = hatch.Id, Car = hatch, StartDate = from.AddDays(4), EndDate = to, Status = RentalStatus.Active },
-            new() { Id = Guid.NewGuid(), CarId = coupe.Id, Car = coupe, StartDate = from.AddDays(5), EndDate = to, Status = RentalStatus.Active }
+            new() { Id = Guid.NewGuid(), CarId = suv.Id,   Car = suv,   StartDate = from.AddDays(1), EndDate = to, RentalStatus = RentalStatus.Active },
+            new() { Id = Guid.NewGuid(), CarId = suv.Id,   Car = suv,   StartDate = from.AddDays(2), EndDate = to, RentalStatus = RentalStatus.Active },
+            new() { Id = Guid.NewGuid(), CarId = sedan.Id, Car = sedan, StartDate = from.AddDays(3), EndDate = to, RentalStatus = RentalStatus.Active },
+            new() { Id = Guid.NewGuid(), CarId = hatch.Id, Car = hatch, StartDate = from.AddDays(4), EndDate = to, RentalStatus = RentalStatus.Active },
+            new() { Id = Guid.NewGuid(), CarId = coupe.Id, Car = coupe, StartDate = from.AddDays(5), EndDate = to, RentalStatus = RentalStatus.Active }
         };
 
         await _db.Rentals.AddRangeAsync(rentals);

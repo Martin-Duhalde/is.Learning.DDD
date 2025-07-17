@@ -7,9 +7,9 @@ namespace CarRental.Core.Repositories;
 /// </summary>
 public interface IRepository<T> where T : class
 {
-    Task<T?>                /**/ GetByIdAsync   /**/ (Guid id, CancellationToken ct = default);
-    Task<IReadOnlyList<T>>  /**/ ListAllAsync   /**/ (CancellationToken ct = default);
-    Task                    /**/ AddAsync       /**/ (T entity, CancellationToken ct = default);
-    Task                    /**/ UpdateAsync    /**/ (T entity, CancellationToken ct = default);
-    Task                    /**/ DeleteAsync    /**/ (T entity, CancellationToken ct = default);
+    Task<T?>                /**/ GetActiveByIdAsync     /**/ (Guid id, CancellationToken ct = default);
+    Task<IReadOnlyList<T>>  /**/ ListAllActivesAsync    /**/ (CancellationToken ct = default);
+    Task                    /**/ AddAsync               /**/ (T entity, CancellationToken ct = default);
+    Task                    /**/ UpdateAsync            /**/ (T entity, CancellationToken ct = default);
+    Task                    /**/ DeleteAsync            /**/ (T entity, CancellationToken ct = default);
 }
