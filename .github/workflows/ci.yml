@@ -66,6 +66,8 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: code-coverage-report
-        path: '**/TestResults/**/*.coverage'
+        path: |
+          '**/TestResults/**/*coverage*'
+          'coveragereport/**'
 
 
