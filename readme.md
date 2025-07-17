@@ -159,18 +159,25 @@ refactor(car):	extract status logic into enum
 test(car):		add unit tests for CreateCarCommandHandler
 
 ## Test Coverage & Report Generator
-[setup] dotnet tool install --global dotnet-reportgenerator-globaltool
+setup:
+			dotnet tool install --global dotnet-reportgenerator-globaltool
 
-[PowerShell] dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults; reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
-[cmd.exe]    dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults && reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
+PowerShell:
+			dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults; reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
+cmd.exe:    
+			dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults && reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
 
-reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
+Reporte:
+			reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
 
-Genera el archivo: ./DDD.CarRental/coveragereport/index.html
+Genera el archivo:
+			
+			./coveragereport/index.html
 
 ## Hithub Actions CI / CD
 
-ci.yml
+	.github/workflows/ci.yml
+
 
 ---
 
