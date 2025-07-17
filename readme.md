@@ -139,45 +139,82 @@ dotnet ef database update \
 ```
 
 ---
+## 📚 Nomenclatura de Métodos en Repositorios
 
-## Formalización nomenclatura métodos en repositorios (DDD + Clean Architecture)
-## Método		Uso / Significado											Retorno típico			Comentario
-GetByIdAsync	Obtener un único agregado o entidad por su ID				Entidad o null			Busca exacto, obligatorio único
-FindByAsync		Buscar entidad por alguna(s) propiedad(es) específicas		Entidad o null			Puede no existir, búsqueda con filtro(s)
-ListAllAsync	Listar todas las entidades del tipo							Lista de entidades		Sin filtro, paginación opcional
-ListByAsync		Listar entidades filtradas por propiedades					Lista de entidades		Retorna 0 o más entidades, filtro aplicado
-ExistsByAsync	Verificar si existe entidad con propiedades dadas			bool					Ideal para validaciones antes de creación
-AddAsync		Insertar nueva entidad										void / Task				Persistencia
-UpdateAsync		Actualizar entidad											void / Task				Puede incluir control de versión
-DeleteAsync		Eliminar entidad (lógico o físico según implementación)		void / Task	
+Los siguientes métodos representan convenciones adoptadas para mantener claridad, consistencia y trazabilidad en la capa de persistencia:
 
+| Método          | Descripción                                    | Retorno típico     | Notas técnicas                                   |
+| --------------- | ---------------------------------------------- | ------------------ | ------------------------------------------------ |
+| `GetByIdAsync`  | Obtiene una entidad por su identificador único | Entidad o `null`   | Búsqueda directa y única                         |
+| `FindByAsync`   | Busca una entidad según una o más propiedades  | Entidad o `null`   | Uso común en validaciones o búsquedas únicas     |
+| `ListAllAsync`  | Devuelve todas las entidades del tipo          | Lista de entidades | Puede incluir paginación o proyección opcional   |
+| `ListByAsync`   | Filtra entidades por propiedades específicas   | Lista de entidades | Resultado de 0 o más entidades                   |
+| `ExistsByAsync` | Verifica existencia bajo condiciones dadas     | `bool`             | Ideal para validaciones de unicidad              |
+| `AddAsync`      | Inserta una nueva entidad en el repositorio    | `Task` / `void`    | Requiere validación previa                       |
+| `UpdateAsync`   | Actualiza una entidad existente                | `Task` / `void`    | Puede manejar control de versiones               |
+| `DeleteAsync`   | Elimina la entidad (lógica o físicamente)      | `Task` / `void`    | Considera el uso de `IsActive = false` en lógica |
 
-## Conventional Commits 
-feat(car):		allow creation of car with version control
-fix(car):		increment version properly on soft delete
-refactor(car):	extract status logic into enum
-test(car):		add unit tests for CreateCarCommandHandler
+---
 
-## Test Coverage & Report Generator
-setup:
-			dotnet tool install --global dotnet-reportgenerator-globaltool
+## 📘 Convenciones de Commits
 
-PowerShell:
-			dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults; reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
-cmd.exe:    
-			dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults && reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
+Utilizamos [Conventional Commits](https://www.conventionalcommits.org/) para mantener historial semántico y facilitar automatizaciones.
 
-Reporte:
-			reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
+| Tipo       | Propósito                              | Ejemplo                                                 |
+| ---------- | -------------------------------------- | ------------------------------------------------------- |
+| `feat`     | Nueva funcionalidad                    | `feat(car): allow creation of car with version control` |
+| `fix`      | Corrección de errores                  | `fix(car): increment version properly on soft delete`   |
+| `refactor` | Mejora interna sin cambios funcionales | `refactor(car): extract status logic into enum`         |
+| `test`     | Agregado/mejora de pruebas             | `test(car): add unit tests for CreateCarCommandHandler` |
 
-Genera el archivo:
-			
-			./coveragereport/index.html
+---
 
-## Hithub Actions CI / CD
+## 📊 Reporte de Cobertura de Pruebas
 
-	.github/workflows/ci.yml
+### 🔧 Instalación de herramienta
 
+```bash
+dotnet tool install --global dotnet-reportgenerator-globaltool
+```
+
+### ▶️ Ejecutar tests + generar cobertura
+
+**PowerShell:**
+
+```powershell
+dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults
+reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
+```
+
+**CMD:**
+
+```cmd
+dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults && ^
+reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
+```
+
+📄 Genera archivo de cobertura en:
+
+```
+./coveragereport/index.html
+```
+
+---
+
+## ⚙️ GitHub Actions: CI/CD
+
+El workflow se encuentra en:
+
+```
+.github/workflows/ci.yml
+```
+
+Incluye:
+
+* Build automático
+* Validación de tests
+* Soporte para cobertura
+* Pruebas integradas
 
 ---
 

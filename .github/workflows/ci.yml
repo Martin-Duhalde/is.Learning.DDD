@@ -47,6 +47,9 @@ jobs:
           -- --connection "Data Source=/tmp/CarRental.db"
       shell: bash
 
+    - name: Install reportgenerator tool
+      run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
     - name: 🧪 Run Unit Tests
       run: dotnet test tests/CarRental.Tests.UseCases/CarRental.Tests.UseCases.csproj --configuration Release --no-build --collect:"XPlat Code Coverage"
 
@@ -56,8 +59,13 @@ jobs:
 #    - name: 💻 Run Functional Tests
 #      run: dotnet test tests/CarRental.Tests.Functional/CarRental.Tests.Functional.csproj --configuration Release --no-build --collect:"XPlat Code Coverage"
 
+    - name: Generate coverage report
+      run: reportgenerator -reports:"**/TestResults/**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
+
     - name: ☁️ Upload code coverage results
       uses: actions/upload-artifact@v4
       with:
         name: code-coverage-report
         path: '**/TestResults/**/*.coverage'
+
+

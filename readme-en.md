@@ -1,6 +1,6 @@
 ﻿# 🇬🇧 Car Rental System - Backend (.NET 9)
 
-This repository contains the backend of a car rental system built with **.NET 9**, following **Clean Architecture**, **DDD**, and **CQRS** principles. It is designed to integrate with an Angular frontend and supports features such as user authentication, vehicle reservation, and service tracking.
+This repository contains the backend of a car rental system developed with **.NET 9**, following **Clean Architecture**, **DDD**, and **CQRS** principles. It is designed to integrate with an Angular frontend and supports features like authentication, vehicle reservations, and service tracking.
 
 > ⚠️ This repository was created for a technical evaluation and may be removed after the interview.
 
@@ -8,14 +8,14 @@ This repository contains the backend of a car rental system built with **.NET 9*
 
 ## ⚙️ Technologies & Architecture
 
-- **.NET 9**, C# 12
-- **Clean Architecture** + **DDD** + **CQRS**
-- **Entity Framework Core** with code-first migrations
-- **JWT** authentication and **role-based** authorization
-- **xUnit**, **FluentAssertions**, **NSubstitute**
-- **OpenTelemetry**, HealthChecks, centralized logging
-- **Swagger/OpenAPI** with XML docs and JWT support
-- **Azure Durable Functions** (prepared for email workflows)
+* **.NET 9**, C# 12
+* **Clean Architecture**, **DDD**, and **CQRS**
+* **Entity Framework Core** with code-first migrations
+* **JWT** authentication and role-based authorization
+* **xUnit**, **FluentAssertions**, **NSubstitute**
+* **OpenTelemetry**, HealthChecks, centralized logging
+* **Swagger/OpenAPI** with XML docs and JWT support
+* **Azure Durable Functions** (prepared for email workflows)
 
 ---
 
@@ -27,21 +27,21 @@ dotnet ef database update
 dotnet run
 ```
 
-Access Swagger UI:
+Access Swagger:
 
 ```
 https://localhost:7263/swagger
 https://localhost:7263/swagger/index.html
 ```
 
-Access Scalar UI:
+Access Scalar:
 
 ```
 https://localhost:7263/scalar
 https://localhost:7263/openapi/v1.json
 ```
 
-Health & readiness:
+Health and readiness:
 
 ```
 https://localhost:7263/health
@@ -54,14 +54,14 @@ https://localhost:7263/alive
 
 ```
 /src
- ├── CarRental.API            → Web API layer
- ├── CarRental.Core           → Interfaces (ports)
- ├── CarRental.Domain         → Domain model (entities, exceptions)
+ ├── CarRental.API            → REST API Layer
+ ├── CarRental.Core           → Port interfaces
+ ├── CarRental.Domain         → Domain model
  ├── CarRental.Infrastructure → EF Core, Identity, Email, Logging
- ├── CarRental.UseCases       → CQRS Handlers & DTOs
+ └── CarRental.UseCases       → CQRS Handlers and DTOs
 /tests
- ├── CarRental.Tests.Functional   → End-to-end HTTP tests
- ├── CarRental.Tests.Integration  → Database & repository integration tests
+ ├── CarRental.Tests.Functional   → End-to-end tests
+ ├── CarRental.Tests.Integration  → DB and repository tests
  └── CarRental.Tests.UseCases     → Unit tests for use cases
 ```
 
@@ -69,13 +69,13 @@ https://localhost:7263/alive
 
 ## 🧪 Testing Strategy
 
-| Type          | Scope                          | Tools                         | Coverage Example           |
-| ------------- | ------------------------------ | ----------------------------- | -------------------------- |
-| ✅ Unit Tests  | Pure logic, handlers, services | `xUnit`, `NSubstitute`        | CreateRentalCommandHandler |
-| ✅ Integration | Real DB queries, repos         | EF Core + SQLite/PostgreSQL   | EfRentalRepository         |
-| ✅ End-to-End  | HTTP API requests              | `TestServer`, `WebAppFactory` | Rental full flow           |
+| Type          | Scope                       | Tools                         | Example                    |
+| ------------- | --------------------------- | ----------------------------- | -------------------------- |
+| ✅ Unit Tests  | Pure logic, services, rules | `xUnit`, `NSubstitute`        | CreateRentalCommandHandler |
+| ✅ Integration | Repositories, real queries  | EF Core + SQLite/PostgreSQL   | EfRentalRepository         |
+| ✅ E2E         | Full HTTP flow              | `TestServer`, `WebAppFactory` | Rental full flow           |
 
-To run tests:
+Run tests:
 
 ```bash
 cd tests/CarRental.Tests.UseCases
@@ -84,64 +84,58 @@ dotnet test --collect:"XPlat Code Coverage"
 
 ---
 
-## 🔐 Authentication and Authorization
+## 🔐 Authentication & Authorization
 
-- User registration and login using **JWT tokens**.
-- Secure, token-based authentication with robust configuration.
-- **ASP.NET Core Identity** for user, role (`Admin`, `User`), and claims management with seeding via a `Seeder`.
-- Role-based route protection using `[Authorize(Roles = "Admin")]`.
-- Public routes allowed with `[AllowAnonymous]`.
+* User registration/login via JWT
+* Token-based authentication with secure configuration
+* ASP.NET Core Identity
 
----
+  * User, role (`Admin`, `User`) and claims management with seeded data (`Seeder`)
+* Role-based route protection: `[Authorize(Roles = "Admin")]`
+* Public access: `[AllowAnonymous]`
 
-## 📦 Database Providers
+### 📦 Database
 
-- **EF Core (Entity Framework Core)** – Code-First ORM with support for multiple database engines:
-  - **SQL Server**
-  - **PostgreSQL**
-  - **SQLite** (used for automated builds in GitHub Actions)
+* **EF Core (Entity Framework Core)** – Code-first ORM supporting multiple providers:
 
-> The database provider can be configured via `appsettings.json` using the `DatabaseProvider` key.
+  * SQL Server
+  * PostgreSQL
+  * SQLite (used in GitHub Actions)
 
----
+### 🧰 Validation & Behavior
 
-## 🧪 Validation and Behavior
+* **FluentValidation** – Declarative validation for DTOs and commands
+* **Validation Pipeline with MediatR** – Automatically validates before handling commands
 
-- **FluentValidation** – Declarative validation for DTOs and use-case commands.
-- **Validation Pipeline** with MediatR – Automatically applies validators before command handlers.
+### 🛠️ Services & Utilities
 
----
+* **AutoMapper** – Maps between entities and DTOs
+* **Serilog** – Structured logging configurable via `appsettings.json`
+* **Swagger + Scalar** – Interactive API documentation:
 
-## 🧰 Services and Utilities
+  * `/swagger`, `/openapi/v1.json`, `/scalar`
 
-- **AutoMapper** – Maps between domain entities and DTOs.
-- **Serilog** – Structured logging, configurable via `appsettings.json`, with console and file output.
-- **Swagger + Scalar** – Interactive API documentation:
-  - `/swagger`, `/openapi/v1.json`, `/scalar`
-
----
-
-## 📧 Email Services
+### 📧 Email Services
 
 > Inspired by the [`Clean.Architecture.Infrastructure`](https://github.com/ardalis/CleanArchitecture) project by Ardalis.
 
-- Abstraction via `IEmailService` with interchangeable implementations:
-  - `FakeEmailSender` for testing
-  - `MimeKitEmailSender` for real email delivery
+* Abstraction via `IEmailService`, interchangeable implementations:
+
+  * `FakeEmailSender`, `MimeKitEmailSender`
 
 ---
 
-## 📈 Monitoring & Observability
+## 📈 Observability
 
-- ✅ Health endpoints: `/health`, `/alive`
-- ✅ OpenTelemetry: traces for ASP.NET and HttpClient
-- ✅ Centralized logs with Serilog (console + file)
+* ✅ Health endpoints: `/health`, `/alive`
+* ✅ Tracing with OpenTelemetry (ASP.NET and HttpClient)
+* ✅ Centralized logging with Serilog (console + file)
 
 ---
 
 ## 📦 EF Core Migrations
 
-Create migrations by provider:
+Create provider-specific migrations:
 
 ```bash
 dotnet ef migrations add InitSQLite \
@@ -156,52 +150,83 @@ dotnet ef database update \
 
 ---
 
+## 📘 Repository Method Naming Conventions
 
+These method signatures represent standard naming conventions to improve clarity and traceability in the persistence layer:
 
-## Formalización nomenclatura métodos en repositorios (DDD + Clean Architecture)
-## Método		Uso / Significado											Retorno típico			Comentario
-GetByIdAsync	Obtener un único agregado o entidad por su ID				Entidad o null			Busca exacto, obligatorio único
-FindByAsync		Buscar entidad por alguna(s) propiedad(es) específicas		Entidad o null			Puede no existir, búsqueda con filtro(s)
-ListAllAsync	Listar todas las entidades del tipo							Lista de entidades		Sin filtro, paginación opcional
-ListByAsync		Listar entidades filtradas por propiedades					Lista de entidades		Retorna 0 o más entidades, filtro aplicado
-ExistsByAsync	Verificar si existe entidad con propiedades dadas			bool					Ideal para validaciones antes de creación
-AddAsync		Insertar nueva entidad										void / Task				Persistencia
-UpdateAsync		Actualizar entidad											void / Task				Puede incluir control de versión
-DeleteAsync		Eliminar entidad (lógico o físico según implementación)		void / Task	
-
-
-## Conventional Commits 
-feat(car):		allow creation of car with version control
-fix(car):		increment version properly on soft delete
-refactor(car):	extract status logic into enum
-test(car):		add unit tests for CreateCarCommandHandler
-
-## Test Coverage & Report Generator
-setup:
-			dotnet tool install --global dotnet-reportgenerator-globaltool
-
-PowerShell:
-			dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults; reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
-cmd.exe:    
-			dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults && reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
-
-Reporte:
-			reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
-
-Genera el archivo:
-			
-			./coveragereport/index.html
-
-## Hithub Actions CI / CD
-
-	.github/workflows/ci.yml
-
+| Method          | Description                               | Typical Return   | Notes                                         |
+| --------------- | ----------------------------------------- | ---------------- | --------------------------------------------- |
+| `GetByIdAsync`  | Retrieves an entity by its unique ID      | Entity or `null` | Direct, unique fetch                          |
+| `FindByAsync`   | Finds an entity by one or more properties | Entity or `null` | Used for validations or single matches        |
+| `ListAllAsync`  | Retrieves all entities of a type          | List of entities | Can include optional paging or projection     |
+| `ListByAsync`   | Filters entities by property values       | List of entities | Returns 0 or more, depends on filter          |
+| `ExistsByAsync` | Checks if entity exists under conditions  | `bool`           | Useful for uniqueness validations             |
+| `AddAsync`      | Inserts a new entity into the repository  | `Task` / `void`  | Requires validation before adding             |
+| `UpdateAsync`   | Updates an existing entity                | `Task` / `void`  | Can support optimistic concurrency            |
+| `DeleteAsync`   | Deletes an entity (soft/hard)             | `Task` / `void`  | Often sets `IsActive = false` in soft deletes |
 
 ---
 
-**Author / Autor**: Martín Duhalde + ChatGPT (2025)
+## 📘 Conventional Commits
 
+We follow [Conventional Commits](https://www.conventionalcommits.org/) to keep the Git history semantic and automation-friendly:
 
+| Type       | Purpose                           | Example                                                 |
+| ---------- | --------------------------------- | ------------------------------------------------------- |
+| `feat`     | New functionality                 | `feat(car): allow creation of car with version control` |
+| `fix`      | Bug fix                           | `fix(car): increment version properly on soft delete`   |
+| `refactor` | Internal code change, no behavior | `refactor(car): extract status logic into enum`         |
+| `test`     | Adding or improving tests         | `test(car): add unit tests for CreateCarCommandHandler` |
 
-**Author / Autor**: Martín Duhalde + ChatGPT (2025)
+---
 
+## 📊 Test Coverage Report
+
+### 🔧 Install Report Generator
+
+```bash
+dotnet tool install --global dotnet-reportgenerator-globaltool
+```
+
+### ▶️ Run Tests + Generate Coverage
+
+**PowerShell:**
+
+```powershell
+dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults
+reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
+```
+
+**CMD:**
+
+```cmd
+dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults && ^
+reportgenerator -reports:"./TestResults/**/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
+```
+
+📄 Generates coverage report at:
+
+```
+./coveragereport/index.html
+```
+
+---
+
+## ⚙️ GitHub Actions: CI/CD
+
+CI pipeline defined at:
+
+```
+.github/workflows/ci.yml
+```
+
+Includes:
+
+* Automatic build
+* Unit test validation
+* Coverage support
+* Integration test execution
+
+---
+
+**Author**: Martín Duhalde + ChatGPT (2025)
