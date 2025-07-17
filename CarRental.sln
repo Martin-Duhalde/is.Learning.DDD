@@ -21,6 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{32161FE7-2
 		.github\workflows\ci.yml = .github\workflows\ci.yml
 		readme-en.md = readme-en.md
 		readme.md = readme.md
+		report.bat = report.bat
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRental.API", "src\CarRental.API\CarRental.API.csproj", "{7AFC8D16-1CF2-FFDA-B690-21C1D3591C81}"

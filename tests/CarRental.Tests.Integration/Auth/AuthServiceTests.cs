@@ -125,4 +125,42 @@ public class AuthServiceTests
 
         Assert.Equal("Invalid credentials.", ex.Message);
     }
+    [Fact]
+    public async Task should_throw_when_user_creation_fails()
+    {
+        // Arrange
+        var email = "fail@email.com";
+        var fullName = "Fail User";
+        var password = "Fail123!";
+
+        var identityErrors = new List<IdentityError>
+    {
+        new IdentityError { Description = "Email is already taken" },
+        new IdentityError { Description = "Password is too weak" }
+    };
+
+        var failedResult = IdentityResult.Failed(identityErrors.ToArray());
+
+        _userManagerMock
+            .Setup(x => x.CreateAsync(It.IsAny<ApplicationUser>(), password))
+            .ReturnsAsync(failedResult);
+
+        // Act & Assert
+        var ex = await Assert.ThrowsAsync<ApplicationException>(() => _authService.RegisterAsync(fullName, email, password));
+
+        Assert.Contains("Email is already taken", ex.Message);
+        Assert.Contains("Password is too weak", ex.Message);
+
+        _loggerMock.Verify(
+            x => x.Log(
+                LogLevel.Warning,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("Email is already taken")),
+                It.IsAny<Exception?>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()
+            ),
+            Times.Once
+        );
+    }
+
 }

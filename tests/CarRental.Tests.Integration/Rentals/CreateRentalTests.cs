@@ -5,8 +5,6 @@ using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Repositories;
 using CarRental.UseCases.Rentals.Create;
 
-using Microsoft.EntityFrameworkCore;
-
 namespace CarRental.Tests.Integration.Rentals;
 
 public class CreateRentalTests : IDisposable

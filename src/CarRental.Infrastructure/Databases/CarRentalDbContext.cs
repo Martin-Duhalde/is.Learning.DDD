@@ -19,40 +19,12 @@ public class CarRentalDbContext : IdentityDbContext<ApplicationUser> //: DbConte
     public DbSet<Rental>    /**/ Rentals        /**/ => Set<Rental>();
     public DbSet<Service>   /**/ Services       /**/ => Set<Service>();
 
+   
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-
-
-        if (Database.IsSqlServer())
+        if (IsOnSqlServer())
         {
-            // GUID debe ser tratado como uniqueidentifier en SQL Server
-            modelBuilder.Entity<Car>(entity =>
-            {
-                entity.Property(e => e.Id)
-                      .HasColumnType("uniqueidentifier") // solo necesario para SQL Server
-                      .ValueGeneratedOnAdd();            // autogenerado
-            });
-
-            modelBuilder.Entity<Customer>(entity =>
-            {
-                entity.Property(e => e.Id)
-                      .HasColumnType("uniqueidentifier")
-                      .ValueGeneratedOnAdd();
-            });
-
-            modelBuilder.Entity<Rental>(entity =>
-            {
-                entity.Property(e => e.Id)
-                      .HasColumnType("uniqueidentifier")
-                      .ValueGeneratedOnAdd();
-            });
-
-            modelBuilder.Entity<Service>(entity =>
-            {
-                entity.Property(e => e.Id)
-                      .HasColumnType("uniqueidentifier")
-                      .ValueGeneratedOnAdd();
-            });
+            OnModelCreatingSQLServer(modelBuilder);
         }
 
         modelBuilder.Entity<Car>()
@@ -73,5 +45,42 @@ public class CarRentalDbContext : IdentityDbContext<ApplicationUser> //: DbConte
             .OnDelete(DeleteBehavior.Restrict);
 
         base.OnModelCreating(modelBuilder);
+    }
+    public virtual bool IsOnSqlServer() /// For test enviroment
+    {
+        return Database.IsSqlServer();
+    }
+
+    private void OnModelCreatingSQLServer(ModelBuilder modelBuilder)
+    {
+        // GUID debe ser tratado como uniqueidentifier en SQL Server
+        modelBuilder.Entity<Car>(entity =>
+        {
+            entity.Property(e => e.Id)
+                  .HasColumnType("uniqueidentifier") // solo necesario para SQL Server
+                  .ValueGeneratedOnAdd();            // autogenerado
+        });
+
+        modelBuilder.Entity<Customer>(entity =>
+        {
+            entity.Property(e => e.Id)
+                  .HasColumnType("uniqueidentifier")
+                  .ValueGeneratedOnAdd();
+        });
+
+        modelBuilder.Entity<Rental>(entity =>
+        {
+            entity.Property(e => e.Id)
+                  .HasColumnType("uniqueidentifier")
+                  .ValueGeneratedOnAdd();
+        });
+
+        modelBuilder.Entity<Service>(entity =>
+        {
+            entity.Property(e => e.Id)
+                  .HasColumnType("uniqueidentifier")
+                  .ValueGeneratedOnAdd();
+        });
+
     }
 }
