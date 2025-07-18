@@ -3,11 +3,10 @@
 using CarRental.Domain.Exceptions;
 using CarRental.UseCases.Common.Dtos;
 
-using FluentValidation;
-using FluentValidationException = FluentValidation.ValidationException;
-
 using System.Net;
 using System.Text.Json;
+
+using FluentValidationException = FluentValidation.ValidationException;
 
 namespace CarRental.API.Middlewares;
 
@@ -64,28 +63,38 @@ public class ErrorHandlingMiddleware
         switch (exception)
         {
             case InvalidCredentialsException:
-                status                  /**/ = HttpStatusCode.Unauthorized;
-                errorMessage            /**/ = "🔐 Invalid credentials";
+                status                          /**/ = HttpStatusCode.Unauthorized;
+                errorMessage                    /**/ = "🔐 Invalid credentials";
+                break;
+
+            case ConcurrencyConflictException:
+                status                          /**/ = HttpStatusCode.Conflict;
+                errorMessage                    /**/ = "🔄 Concurrency conflict: the entity was modified by another user or process.";
+                break;
+           
+            case DomainNotFoundException:
+                status                          /**/ = HttpStatusCode.NotFound;
+                errorMessage                    /**/ = "🚫 Resource not available: the entity was not found or has been deleted.";
                 break;
 
             case DomainException:
-                status                  /**/ = HttpStatusCode.BadRequest;
-                errorMessage            /**/ = "📘 Business rule violation (Domain error)";
+                status                          /**/ = HttpStatusCode.BadRequest;
+                errorMessage                    /**/ = "📘 Business rule violation (Domain error)";
                 break;
 
             case UnauthorizedAccessException:
-                status                  /**/ = HttpStatusCode.Unauthorized;
-                errorMessage            /**/ = "🔒 Unauthorized access";
+                status                          /**/ = HttpStatusCode.Unauthorized;
+                errorMessage                    /**/ = "🔒 Unauthorized access";
                 break;
 
             case ArgumentException:
-                status                  /**/ = HttpStatusCode.InternalServerError;
-                errorMessage            /**/ = "💥 Internal server error";
+                status                          /**/ = HttpStatusCode.InternalServerError;
+                errorMessage                    /**/ = "💥 Internal server error";
                 break;
 
             default:
-                status                  /**/ = HttpStatusCode.InternalServerError;
-                errorMessage            /**/ = "Internal Server Error";
+                status                          /**/ = HttpStatusCode.InternalServerError;
+                errorMessage                    /**/ = "💥 Internal Server Error";
                 break;
         }
 

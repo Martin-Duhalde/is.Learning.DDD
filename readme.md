@@ -139,6 +139,53 @@ dotnet ef database update \
 ```
 
 ---
+
+# 🚗 CRUD API - Ejemplo: Car
+
+| Método HTTP | Ruta                  | Descripción                              | Código de Respuesta | Notas                            |
+|-------------|-----------------------|------------------------------------------|----------------------|----------------------------------|
+| POST        | /api/car              | Crea un nuevo auto                       | 201 Created          | Devuelve el ID del nuevo auto   |
+| GET         | /api/car              | Lista todos los autos activos            | 200 OK               | Soporta paginación/filtrado     |
+| GET         | /api/car/{id}         | Obtiene un auto por su ID                | 200 OK / 404 NotFound| Solo activos                    |
+| PUT         | /api/car/{id}         | Actualiza un auto existente              | 204 NoContent / 400  | Requiere coincidencia de ID     |
+| DELETE      | /api/car/{id}         | Elimina lógicamente un auto              | 204 NoContent / 404  | Marca como IsActive = false     |
+
+---
+
+
+## ✅ Functional Test Summary for `/api/car`
+
+This table provides a professional overview of functional tests implemented in `CarApiFlowTests`. Each test follows consistent naming, emoji semantics, and verifies expected HTTP behaviors.
+
+### 📋 CRUD & Flow Tests
+
+| Emoji | Display Name                                           | Method     | Endpoint      | Expected Status | Notes                                            |
+| ----- | ------------------------------------------------------ | ---------- | ------------- | --------------- | ------------------------------------------------ |
+| ❤️    | should return 200 on /alive                            | GET        | /alive        | 200 OK          | Health check                                     |
+| ✅     | Full car flow: create, duplicate, get all, fail on bad | Mixed      | /api/car      | 201, 400, 200   | Complete create-read-invalid scenario            |
+| ✅     | Full car flow: create Tesla, verify, cleanup           | Mixed      | /api/car      | 201, 200        | Test with Tesla data                             |
+| ➕     | should create a car (Toyota) successfully              | POST       | /api/car      | 201 Created     | Valid creation                                   |
+| ➕     | should create car and return valid Id                  | POST       | /api/car      | 201 Created     | Check `CarId` validity                           |
+| ⚫     | should retrieve car by ID                              | GET        | /api/car/{id} | 200 OK          | Retrieve specific car                            |
+| ⚫     | should get all cars                                    | GET        | /api/car      | 200 OK          | List all                                         |
+| ⚫     | should return only active cars                         | GET        | /api/car      | 200 OK          | Excludes logically deleted records               |
+| 🚫    | should fail on duplicate car                           | POST       | /api/car      | 400 BadRequest  | Duplicate entry                                  |
+| 🚫    | should fail on invalid car data                        | POST       | /api/car      | 400 BadRequest  | Validation error                                 |
+| ❌     | should soft delete car                                 | DELETE     | /api/car/{id} | 204 NoContent   | Logical delete, no visible trace afterwards      |
+| ❌     | should soft delete car and prevent future access       | DELETE/GET | /api/car/{id} | 204 / 404       | Tests access blocked after delete                |
+| 🔁    | should fail to update car with outdated row version    | PUT        | /api/car/{id} | 204 / 409       | Concurrency (optimistic lock) with version check |
+
+### 📌 Legend
+
+* **➕** Create
+* **⚫** Read/Get
+* **🔁** Update
+* **❌** Delete
+* **🚫** Failures (bad input, duplicates)
+* **🔁** Concurrency conflict
+* **✅** General success flow
+* **❤️** Heartbeat or health endpoint
+
 ## 📚 Nomenclatura de Métodos en Repositorios
 
 Los siguientes métodos representan convenciones adoptadas para mantener claridad, consistencia y trazabilidad en la capa de persistencia:

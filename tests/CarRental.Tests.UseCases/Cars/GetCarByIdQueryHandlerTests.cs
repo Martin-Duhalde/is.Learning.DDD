@@ -65,9 +65,7 @@ public class GetCarByIdQueryHandlerTests
         var query = new GetCarByIdQuery(nonExistentCarId);
 
         // Act + Assert
-        var ex = await Assert.ThrowsAsync<DomainException>(() =>
+        var ex = await Assert.ThrowsAsync<DomainNotFoundException>(() =>
             _handler.Handle(query, CancellationToken.None));
-
-        Assert.Equal("Car not found", ex.Message);
     }
 }

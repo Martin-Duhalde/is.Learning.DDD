@@ -1,5 +1,4 @@
-﻿
-namespace CarRental.Tests.Functional.Helpers;
+﻿namespace CarRental.Tests.Functional.Common;
 
 using System.Net.Http.Json;
 

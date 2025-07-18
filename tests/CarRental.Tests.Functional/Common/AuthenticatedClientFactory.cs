@@ -1,7 +1,4 @@
-﻿
-using CarRental.Tests.Functional.Helpers;
-
-namespace CarRental.Tests.Functional.Common;
+﻿namespace CarRental.Tests.Functional.Common;
 public static class AuthenticatedClientFactory
 {
     public static async Task<HttpClient> CreateAuthenticatedClientAsync(CustomWebApplicationFactory<Program> factory, string email = "testuser@test.com")

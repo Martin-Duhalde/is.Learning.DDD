@@ -24,7 +24,7 @@ public class UpdateCarCommandHandler : IRequestHandler<UpdateCarCommand, Unit>
             ?? throw new DomainException("Car not found.");
 
         if (request.Version != car.Version)
-            throw new DomainException("The car has been modified by another user or process.");
+            throw new ConcurrencyConflictException("The car has been modified by another user or process.");
         
         car.Model   /**/ = request.Model;
         car.Type    /**/ = request.Type;

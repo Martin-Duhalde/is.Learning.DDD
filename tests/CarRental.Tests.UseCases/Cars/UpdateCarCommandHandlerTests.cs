@@ -87,9 +87,10 @@ public class UpdateCarCommandHandlerTests
                       .Returns(existingCar);
 
         // Act + Assert
-        var ex = await Assert.ThrowsAsync<DomainException>(() =>
+        var ex = await Assert.ThrowsAsync<ConcurrencyConflictException>(() =>
             _handler.Handle(command, CancellationToken.None));
 
+        //throw new ConcurrencyConflictException("The car has been modified by another user or process.");
         Assert.Equal("The car has been modified by another user or process.", ex.Message);
 
         await _carRepository.DidNotReceive().UpdateAsync(Arg.Any<Car>(), Arg.Any<CancellationToken>());

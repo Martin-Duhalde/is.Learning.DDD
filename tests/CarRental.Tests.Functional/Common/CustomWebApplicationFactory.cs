@@ -3,11 +3,12 @@ using CarRental.Infrastructure.Databases;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace CarRental.Tests.Functional;
+namespace CarRental.Tests.Functional.Common;
 
 public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
 {
@@ -57,32 +58,60 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
 
         return host;
     }
-
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder
-            .ConfigureServices(services =>
+        builder.ConfigureServices(services =>
+        {
+            // Elimina el DbContext original registrado por la app
+            var descriptor = services.SingleOrDefault(
+                d => d.ServiceType == typeof(DbContextOptions<CarRentalDbContext>));
+            if (descriptor != null)
             {
-                // Configure test dependencies here
+                services.Remove(descriptor);
+            }
 
-                //// Remove the app's ApplicationDbContext registration.
-                //var descriptor = services.SingleOrDefault(
-                //d => d.ServiceType ==
-                //    typeof(DbContextOptions<AppDbContext>));
+            // Genera una ruta única por test
+            var dbPath = $"CarRental_{Guid.NewGuid()}.db";
 
-                //if (descriptor != null)
-                //{
-                //  services.Remove(descriptor);
-                //}
-
-                //// This should be set for each individual test run
-                //string inMemoryCollectionName = Guid.NewGuid().ToString();
-
-                //// Add ApplicationDbContext using an in-memory database for testing.
-                //services.AddDbContext<AppDbContext>(options =>
-                //{
-                //  options.UseInMemoryDatabase(inMemoryCollectionName);
-                //});
+            // Reemplaza el DbContext con una base SQLite única
+            services.AddDbContext<CarRentalDbContext>(options =>
+            {
+                options.UseSqlite($"Data Source={dbPath}");
             });
+
+            // Fuerza la creación de la base nueva
+            var sp = services.BuildServiceProvider();
+            using var scope = sp.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<CarRentalDbContext>();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+        });
     }
+    //protected override void ConfigureWebHost(IWebHostBuilder builder)
+    //{
+    //    builder
+    //        .ConfigureServices(services =>
+    //        {
+    //            // Configure test dependencies here
+
+    //            //// Remove the app's ApplicationDbContext registration.
+    //            //var descriptor = services.SingleOrDefault(
+    //            //d => d.ServiceType ==
+    //            //    typeof(DbContextOptions<AppDbContext>));
+
+    //            //if (descriptor != null)
+    //            //{
+    //            //  services.Remove(descriptor);
+    //            //}
+
+    //            //// This should be set for each individual test run
+    //            //string inMemoryCollectionName = Guid.NewGuid().ToString();
+
+    //            //// Add ApplicationDbContext using an in-memory database for testing.
+    //            //services.AddDbContext<AppDbContext>(options =>
+    //            //{
+    //            //  options.UseInMemoryDatabase(inMemoryCollectionName);
+    //            //});
+    //        });
+    //}
 }

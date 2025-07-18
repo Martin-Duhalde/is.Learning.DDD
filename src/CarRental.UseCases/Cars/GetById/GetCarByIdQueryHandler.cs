@@ -23,9 +23,9 @@ public class GetCarByIdQueryHandler : IRequestHandler<GetCarByIdQuery, Car>
 
     public async Task<Car> Handle(GetCarByIdQuery request, CancellationToken cancellationToken)
     {
-        var car = await _db.Cars.FirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
+        var car = await _db.Cars.FirstOrDefaultAsync(c => c.IsActive && c.Id == request.Id, cancellationToken);
         if (car == null)
-            throw new DomainException("Car not found");
+            throw new DomainNotFoundException(typeof(Car).Name, request.Id);
 
         return car;
     }

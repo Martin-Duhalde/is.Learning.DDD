@@ -41,7 +41,7 @@ public class CreateCarCommandHandler : IRequestHandler<CreateCarCommand, Guid>
         };
 
         await _carRepository.AddAsync(car, cancellationToken);
-
+        
         return car.Id;
     }
 }

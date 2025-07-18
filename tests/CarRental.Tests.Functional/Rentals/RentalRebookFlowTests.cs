@@ -1,7 +1,17 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 
+/// NO NORMALIZADO! Esta clase será eliminada en el futuro.
+
+/// Ver normalización: 
+/// 
+///     CarApiFlowTests  en  CarRental.Tests.Functional.Cars;
+
+
 using CarRental.Domain.Entities;
-using CarRental.Infrastructure.Databases; /// CarRentalDbContext
+using CarRental.Infrastructure.Databases;
+using CarRental.Tests.Functional.Common;
+
+/// CarRentalDbContext
 using CarRental.UseCases.Auth.Dtos;
 using CarRental.UseCases.Rentals.Dtos;
 
