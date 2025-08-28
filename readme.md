@@ -2,7 +2,10 @@
 
 Este repositorio contiene el backend de un sistema de alquiler de autos desarrollado con **.NET 9**, siguiendo los principios de **Clean Architecture**, **DDD** y **CQRS**. Está diseñado para integrarse con un frontend en Angular y soporta funcionalidades como autenticación, reservas de vehículos y seguimiento de servicios.
 
-> ⚠️ Este repositorio fue creado para una evaluación técnica y puede eliminarse después de la entrevista.
+> ⚠️ **Aviso importante**  
+> Este repositorio fue creado como medio **didáctico y de demostración** para la materia *Modelado y Diseño de Software*.  
+> Lo estamos contruyendo y en el futuro puede ser **reubicado**.
+
 
 ---
 

@@ -33,6 +33,8 @@ using Serilog;
 using System.Reflection;
 using System.Text;
 
+Console.WriteLine("Iniciando la APP ...");
+
 /************************  builder  ************************/
 
 var builder = WebApplication.CreateBuilder(args);
@@ -273,6 +275,29 @@ app.MapControllers();
 app.MapDefaultEndpoints(); /// MapHealthChecks: /health  /alive
 
 Log.Information("Aplicación iniciada correctamente");
+
+// Hot Links dinámicos 
+app.Lifetime.ApplicationStarted.Register(() =>
+{
+    var server = app.Services.GetRequiredService<Microsoft.AspNetCore.Hosting.Server.IServer>();
+    var addresses = server.Features.Get<Microsoft.AspNetCore.Hosting.Server.Features.IServerAddressesFeature>()?.Addresses;
+
+    if (addresses != null)
+    {
+        Console.WriteLine("");
+        Console.WriteLine("Hot Links:");
+        Console.WriteLine("");
+
+        foreach (var addr in addresses)
+        {
+            Console.WriteLine($"   {addr}/swagger");
+            Console.WriteLine($"   {addr}/scalar");
+            Console.WriteLine($"   {addr}/health");
+            Console.WriteLine($"   {addr}/alive");
+            Console.WriteLine("");
+        }
+    }
+});
 
 app.Run();
 

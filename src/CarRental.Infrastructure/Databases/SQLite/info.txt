@@ -1,0 +1,7 @@
+﻿SQlite database for CarRental application.
+
+Crear migraciones:
+
+dotnet ef migrations add InitSQLite   --project CarRental.Infrastructure  --startup-project CarRental.API  --output-dir Migrations/SQLite
+
+dotnet ef database update   --project CarRental.Infrastructure   --startup-project CarRental.API
