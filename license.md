@@ -1,6 +1,6 @@
 # MIT License
 
-Copyright (c) 2025 Martín Duhalde + ChatGPT
+Copyright (c) 2025 Martï¿½n Duhalde + ChatGPT
 
 Permission is hereby granted, free of charge, to any person obtaining a copy  
 of this software and associated documentation files (the "Software"), to deal  

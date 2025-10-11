@@ -1,4 +1,4 @@
-﻿# 🇬🇧 Car Rental System - Backend (.NET 9)
+# 🇬🇧 Car Rental System - Backend (.NET 9)
 
 This repository contains the backend of a car rental system developed with **.NET 9**, following **Clean Architecture**, **DDD**, and **CQRS** principles. It is designed to integrate with an Angular frontend and supports features like authentication, vehicle reservations, and service tracking.
 
