@@ -22,6 +22,17 @@ Este repositorio contiene el backend de un sistema de alquiler de autos desarrol
 
 ---
 
+## 🚀 Codex (OpenIA) / Asistente IA 
+
+  - Ejecuta `codex.bat` (abre Ubuntu WSL).
+    - Desde PowerShell: `.\codex.bat`
+  - Dentro de Ubuntu, escribe `codex` y presiona Enter.
+  - Utiliza estos comandos iniciales para la IA:
+    - `Iníciate siguiendo las directivas de agent.md`
+    - `Muéstrame los trabajos en proceso y su texto.`
+
+Nota: se requiere tener instalada la CLI de Codex y WSL (en caso de Windows) antes de ejecutar estos pasos.
+
 ## 🚀 Cómo iniciar
 
 ```bash
