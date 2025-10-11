@@ -1,6 +1,8 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CarRental.Infrastructure.Auth;
 

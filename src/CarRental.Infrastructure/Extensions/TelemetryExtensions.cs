@@ -1,6 +1,9 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 /// Code From: Clean.Architecture.Infrastructure (Ardalis)
 
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;

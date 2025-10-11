@@ -7,6 +7,7 @@ using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Repositories;
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CarRental.Infrastructure;
 
