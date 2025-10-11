@@ -6,7 +6,7 @@
 - Objetivo: mantener dependencias dirigidas Domain/Core → UseCases → API, evitando acoplamientos a infraestructura.
 
 ## Tareas
-1. **Eliminar referencia en el proyecto** _(Pendiente)_
+1. **Eliminar referencia en el proyecto** _(Completado 2025-03-05)_
    - Editar `src/CarRental.UseCases/CarRental.UseCases.csproj` y remover el `<ProjectReference>` a Infrastructure.
 2. **Refactorizar handler GetCarById** _(Completado 2025-03-05)_
    - Reemplazar `CarRentalDbContext` por `ICarRepository`.
@@ -20,7 +20,7 @@
 5. **Actualizar pruebas** _(Completado 2025-03-05)_
    - Modificar mocks de los handlers en `tests/CarRental.Tests.UseCases/...` para usar el nuevo puerto.
    - Ajustar suites de integración para escenarios consistentes.
-6. **Revisar DI y compilar** _(Pendiente)_
+6. **Revisar DI y compilar** _(Completado 2025-03-05)_
    - Verificar build y suites relevantes.
 
 ## Notas

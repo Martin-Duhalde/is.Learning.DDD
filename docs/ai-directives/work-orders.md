@@ -15,6 +15,11 @@ Workflow
 4. On completion, update the detail file with outcomes (tests, commits) and move the order to “Done”.
 5. Keep the board’s date current when major updates occur.
 
+Folder Layout
+-------------
+- Directories mirror the board columns and are prefixed numerically (`01-backlog`, `02-ready`, `03-in-progress`, `04-code-review`, `05-testing`, `06-done`, `07-blocked`).
+- Store work-order documents in the directory matching their current status; update links in `board.md` when files move.
+
 Responsibilities
 ----------------
 - Ensure every new order has: context, tasks, acceptance criteria, and links to reference docs.
