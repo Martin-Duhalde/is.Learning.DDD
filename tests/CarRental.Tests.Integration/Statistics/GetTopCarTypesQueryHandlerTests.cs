@@ -3,7 +3,7 @@
 using CarRental.Domain.Entities;
 using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Repositories;
-using CarRental.UseCases.Statistics.GetTopCarTypes;
+using CarRental.Application.Statistics.GetTopCarTypes;
 
 using Microsoft.EntityFrameworkCore;
 

@@ -9,8 +9,8 @@
 using CarRental.Domain.Entities;
 using CarRental.Infrastructure.Databases;
 using CarRental.Tests.Functional.Common;
-using CarRental.UseCases.Auth.Dtos;
-using CarRental.UseCases.Rentals.Dtos;
+using CarRental.Application.Auth.Dtos;
+using CarRental.Application.Rentals.Dtos;
 
 using Microsoft.Extensions.DependencyInjection;
 

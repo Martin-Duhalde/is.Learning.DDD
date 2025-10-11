@@ -22,7 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\CarRental.Domain\CarRental.Domain.csproj" />
     <ProjectReference Include="..\..\src\CarRental.Infrastructure\CarRental.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\src\CarRental.UseCases\CarRental.UseCases.csproj" />
+    <ProjectReference Include="..\..\src\CarRental.Application\CarRental.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

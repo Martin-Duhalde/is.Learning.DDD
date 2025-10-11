@@ -2,8 +2,7 @@
 
 | Backlog | Ready                                                           | In Progress | Code Review | Testing | Done                                                                           | Blocked |
 | ------- | --------------------------------------------------------------- | ----------- | ----------- | ------- | ------------------------------------------------------------------------------ | ------- |
-|         |                                                                 |             |             |         | WO-ARCH-001<br>[Actualizar SDK de proyectos de librería](06-done/WO-ARCH-001.md)<br>WO-ARCH-002<br>[Desacoplar UseCases de Infrastructure](06-done/WO-ARCH-002.md) |         |
-|         | WO-ARCH-003<br>Plan de renombrado de ensamblados Core/UseCases. |             |             |         |                                                                                |         |
+|         |                                                                 |             |             |         | WO-ARCH-001<br>[Actualizar SDK de proyectos de librería](06-done/WO-ARCH-001.md)<br>WO-ARCH-002<br>[Desacoplar UseCases de Infrastructure](06-done/WO-ARCH-002.md)<br>WO-ARCH-003<br>[Renombrar Application.Abstractions/Application](06-done/WO-ARCH-003.md) |         |
 
 ## Notas
 - Actualizar fecha y estado cada vez que se mueva una orden.

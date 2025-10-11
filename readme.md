@@ -69,15 +69,16 @@ https://localhost:7263/alive
 ```
 /src
  ├── CarRental.API            → Capa API REST
- ├── CarRental.Core           → Interfaces de puertos
+ ├── CarRental.Application.Abstractions → Interfaces de puertos
  ├── CarRental.Domain         → Modelo de dominio
  ├── CarRental.Infrastructure → EF Core, Identity, Email, Logging
- ├── CarRental.UseCases       → Handlers CQRS y DTOs
+ ├── CarRental.Application    → Handlers CQRS y DTOs
 /tests
  ├── CarRental.Tests.Functional   → Tests de extremo a extremo
  ├── CarRental.Tests.Integration  → Tests con DB y repos
- └── CarRental.Tests.UseCases     → Tests unitarios de casos de uso
+ └── CarRental.Tests.Application  → Tests unitarios de la capa de aplicación
 ```
+> ℹ️ Desde marzo 2025 los proyectos `CarRental.Core` y `CarRental.UseCases` se llaman `CarRental.Application.Abstractions` y `CarRental.Application`; elimina cualquier carpeta antigua antes de compilar.
 
 ---
 
@@ -92,7 +93,7 @@ https://localhost:7263/alive
 Ejecutar tests:
 
 ```bash
-cd tests/CarRental.Tests.UseCases
+cd tests/CarRental.Tests.Application
 dotnet test --collect:"XPlat Code Coverage"
 ```
 
@@ -280,4 +281,3 @@ Incluye:
 ---
 
 **Author / Autor**: Martín Duhalde + ChatGPT (2025)
-

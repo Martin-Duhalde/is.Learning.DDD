@@ -1,6 +1,6 @@
 ﻿///// MIT License © 2025 Martín Duhalde + ChatGPT
 
-//using CarRental.Core.Repositories;
+//using CarRental.Application.Abstractions.Repositories;
 //using CarRental.Domain.Entities;
 
 //using Microsoft.Extensions.Caching.Memory;

@@ -1,4 +1,4 @@
-﻿using CarRental.Core.Interfaces;
+﻿using CarRental.Application.Abstractions.Interfaces;
 using CarRental.Infrastructure.Email;
 
 using Microsoft.Extensions.Logging;

@@ -1,8 +1,8 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 
-using CarRental.Core.Interfaces;
-using CarRental.UseCases.Auth.Dtos;
-using CarRental.UseCases.Common.Dtos;
+using CarRental.Application.Abstractions.Interfaces;
+using CarRental.Application.Auth.Dtos;
+using CarRental.Application.Common.Dtos;
 
 namespace CarRental.API.Controllers;
 

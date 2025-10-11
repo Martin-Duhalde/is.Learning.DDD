@@ -3,8 +3,8 @@
 /// Este archivo está Normalizado
 
 using CarRental.Tests.Functional.Common;
-using CarRental.UseCases.Cars.Create;
-using CarRental.UseCases.Cars.Dtos;
+using CarRental.Application.Cars.Create;
+using CarRental.Application.Cars.Dtos;
 
 using FluentAssertions;
 

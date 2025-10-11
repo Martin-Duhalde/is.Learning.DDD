@@ -15,7 +15,8 @@ Establecer pautas para cualquier agente Codex que colabore en `DDD.CarRental`, d
 ## Prioridades operativas
 1. Mantener consistencia con la hoja de ruta publicada (ver `docs/guides/2025-03-04-car-rental-roadmap.md`).
 2. Registrar resultados relevantes en los archivos anteriores o anexar nuevos documentos bajo `docs/audits/` o `docs/guides/` con nomenclatura `YYYY-MM-DD-descripcion.md`.
-3. Respetar arquitectura DDD actual: separar Dominio/Core/UseCases/Infra/API; no introducir dependencias cruzadas que violen capas.
+3. Respetar arquitectura DDD actual: separar Dominio/Application.Abstractions/Application/Infra/API; no introducir dependencias cruzadas que violen capas.
+4. Verificar que documentación, scripts y namespaces usen la nomenclatura vigente (`CarRental.Application.Abstractions`, `CarRental.Application`) antes de cerrar una tarea.
 
 ## Workflow sugerido para nuevas tareas
 1. **Revisar estado actual**: leer roadmap y checklist para conocer pendientes.
@@ -32,4 +33,3 @@ Establecer pautas para cualquier agente Codex que colabore en `DDD.CarRental`, d
 
 ## Tareas pendientes clave
 Ver hoja de ruta. Si no hay tareas en progreso, avanzar en la siguiente prioridad del roadmap. Si surge algo urgente, documentarlo y notificar.
-

@@ -6,7 +6,7 @@
 
 ## Ejecución
 1. **Migración de SDKs** _(2025-03-05)_
-   - Editados `src/CarRental.Domain/CarRental.Domain.csproj`, `src/CarRental.Core/CarRental.Core.csproj`, `src/CarRental.UseCases/CarRental.UseCases.csproj` y `src/CarRental.Infrastructure/CarRental.Infrastructure.csproj` para usar `Microsoft.NET.Sdk`.
+   - Editados `src/CarRental.Domain/CarRental.Domain.csproj`, `src/CarRental.Application.Abstractions/CarRental.Application.Abstractions.csproj` (antes `CarRental.Core`), `src/CarRental.Application/CarRental.Application.csproj` (antes `CarRental.UseCases`) y `src/CarRental.Infrastructure/CarRental.Infrastructure.csproj` para usar `Microsoft.NET.Sdk`.
    - Ajustes menores a propiedades (mantener `OutputType=Library`, documentación XML y warnings suprimidos cuando aplicaba).
 2. **Validación de compilación**
    - `dotnet build CarRental.sln` ejecutado en entorno local (Release/Debug) sin errores ni advertencias nuevas.

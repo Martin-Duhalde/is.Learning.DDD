@@ -3,7 +3,7 @@
 using CarRental.Domain.Entities;
 using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Repositories;
-using CarRental.UseCases.Statistics.GetDailyUsage;
+using CarRental.Application.Statistics.GetDailyUsage;
 
 namespace CarRental.Tests.Integration.Statistics;
 

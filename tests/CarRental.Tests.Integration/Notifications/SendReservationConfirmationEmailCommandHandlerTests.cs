@@ -1,11 +1,11 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 
-using CarRental.Core.Interfaces;
+using CarRental.Application.Abstractions.Interfaces;
 using CarRental.Domain.Entities;
 using CarRental.Domain.Exceptions;
 using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Repositories;
-using CarRental.UseCases.Notifications.SendEmail;
+using CarRental.Application.Notifications.SendEmail;
 
 using Microsoft.EntityFrameworkCore;
 

@@ -1,7 +1,7 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 /// Code From: Clean.Architecture.Infrastructure (Ardalis)
 
-using CarRental.Core.Interfaces;
+using CarRental.Application.Abstractions.Interfaces;
 
 using Microsoft.Extensions.Options;
 

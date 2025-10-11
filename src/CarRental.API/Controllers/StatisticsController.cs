@@ -1,9 +1,9 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 
-using CarRental.UseCases.Statistics.GetDailyUsage;
-using CarRental.UseCases.Statistics.GetDashboard;
-using CarRental.UseCases.Statistics.GetTopCarsByBrandModel;
-using CarRental.UseCases.Statistics.GetTopCarTypes;
+using CarRental.Application.Statistics.GetDailyUsage;
+using CarRental.Application.Statistics.GetDashboard;
+using CarRental.Application.Statistics.GetTopCarsByBrandModel;
+using CarRental.Application.Statistics.GetTopCarTypes;
 
 using MediatR;
 

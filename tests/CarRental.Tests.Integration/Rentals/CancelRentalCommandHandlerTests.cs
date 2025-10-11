@@ -4,7 +4,7 @@ using CarRental.Domain.Entities;
 using CarRental.Domain.Exceptions;
 using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Repositories;
-using CarRental.UseCases.Rentals.Cancel;
+using CarRental.Application.Rentals.Cancel;
 
 using MediatR;
 

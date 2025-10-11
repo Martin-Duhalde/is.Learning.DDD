@@ -7,13 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRental.Domain", "src\Car
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRental.Infrastructure", "src\CarRental.Infrastructure\CarRental.Infrastructure.csproj", "{BC450137-ECDC-D0A6-9C70-887579DD4AD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRental.Core", "src\CarRental.Core\CarRental.Core.csproj", "{0173DABB-0DF7-4753-9132-F05F86F00147}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRental.Application.Abstractions", "src\CarRental.Application.Abstractions\CarRental.Application.Abstractions.csproj", "{0173DABB-0DF7-4753-9132-F05F86F00147}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{44BFDBB8-01BD-4D0C-9AAF-ED48A6687EAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRental.UseCases", "src\CarRental.UseCases\CarRental.UseCases.csproj", "{DCBCEBD5-6881-4298-A82C-ED7A1AAD4F1A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRental.Application", "src\CarRental.Application\CarRental.Application.csproj", "{DCBCEBD5-6881-4298-A82C-ED7A1AAD4F1A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{32161FE7-2A77-4174-8B19-F239FC5B8CAD}"
 	ProjectSection(SolutionItems) = preProject
@@ -27,7 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{32161FE7-2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRental.API", "src\CarRental.API\CarRental.API.csproj", "{7AFC8D16-1CF2-FFDA-B690-21C1D3591C81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRental.Tests.UseCases", "tests\CarRental.Tests.UseCases\CarRental.Tests.UseCases.csproj", "{D7F41C6C-B9CE-2FC6-253B-C765BC9FBD25}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRental.Tests.Application", "tests\CarRental.Tests.Application\CarRental.Tests.Application.csproj", "{D7F41C6C-B9CE-2FC6-253B-C765BC9FBD25}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRental.Tests.Integration", "tests\CarRental.Tests.Integration\CarRental.Tests.Integration.csproj", "{61503CCF-9ED9-6315-0325-FAAB0A88EFB0}"
 EndProject

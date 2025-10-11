@@ -3,7 +3,7 @@
 using CarRental.Domain.Entities;
 using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Repositories;
-using CarRental.UseCases.Statistics.GetTopCarsByBrandModel;
+using CarRental.Application.Statistics.GetTopCarsByBrandModel;
 
 namespace CarRental.Tests.Integration.Statistics;
 

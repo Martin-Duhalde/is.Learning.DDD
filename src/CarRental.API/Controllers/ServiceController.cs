@@ -1,8 +1,8 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 
-using CarRental.UseCases.Common.Dtos;
-using CarRental.UseCases.Rentals.Dtos;
-using CarRental.UseCases.Services.GetUpcoming;
+using CarRental.Application.Common.Dtos;
+using CarRental.Application.Rentals.Dtos;
+using CarRental.Application.Services.GetUpcoming;
 
 using MediatR;
 

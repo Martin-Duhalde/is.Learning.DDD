@@ -1,7 +1,7 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 
 using CarRental.Domain.Exceptions;
-using CarRental.UseCases.Common.Dtos;
+using CarRental.Application.Common.Dtos;
 
 using System.Net;
 using System.Text.Json;

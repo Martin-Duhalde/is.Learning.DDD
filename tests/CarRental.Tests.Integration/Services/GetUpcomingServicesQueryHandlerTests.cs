@@ -3,7 +3,7 @@
 using CarRental.Domain.Entities;
 using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Repositories;
-using CarRental.UseCases.Services.GetUpcoming;
+using CarRental.Application.Services.GetUpcoming;
 
 namespace CarRental.Tests.Integration.Services;
 

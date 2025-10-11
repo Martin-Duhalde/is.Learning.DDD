@@ -3,7 +3,7 @@
 using CarRental.Domain.Entities;
 using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Repositories;
-using CarRental.UseCases.Rentals.CheckAvailability;
+using CarRental.Application.Rentals.CheckAvailability;
 
 using Microsoft.EntityFrameworkCore;
 

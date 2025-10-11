@@ -2,14 +2,14 @@
 
 using AutoMapper;
 
-using CarRental.UseCases.Common.Dtos;
-using CarRental.UseCases.Notifications.SendEmail;
-using CarRental.UseCases.Rentals.Cancel;
-using CarRental.UseCases.Rentals.CheckAvailability;
-using CarRental.UseCases.Rentals.Create;
-using CarRental.UseCases.Rentals.Dtos;
-using CarRental.UseCases.Rentals.Modify;
-using CarRental.UseCases.Statistics.GetTopCarTypes;
+using CarRental.Application.Common.Dtos;
+using CarRental.Application.Notifications.SendEmail;
+using CarRental.Application.Rentals.Cancel;
+using CarRental.Application.Rentals.CheckAvailability;
+using CarRental.Application.Rentals.Create;
+using CarRental.Application.Rentals.Dtos;
+using CarRental.Application.Rentals.Modify;
+using CarRental.Application.Statistics.GetTopCarTypes;
 
 using FluentValidation;
 

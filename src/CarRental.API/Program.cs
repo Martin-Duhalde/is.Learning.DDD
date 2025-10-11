@@ -11,13 +11,13 @@
 ///         https://localhost:7263/alive
 ///         
 
-using CarRental.Core.Interfaces;
+using CarRental.Application.Abstractions.Interfaces;
 using CarRental.Infrastructure.Auth;
 using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Email;
 using CarRental.Infrastructure.Extensions;
-using CarRental.UseCases.Common.Behaviors;
-using CarRental.UseCases.Rentals.Create;
+using CarRental.Application.Common.Behaviors;
+using CarRental.Application.Rentals.Create;
 
 using FluentValidation;
 
@@ -124,12 +124,12 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
 /// Register Asemblys for MediatR: 
-///     CarRental.UseCases
+///     CarRental.Application
 ///     CarRental.Application
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(CreateRentalCommandHandler).Assembly);
-    cfg.RegisterServicesFromAssembly(typeof(CarRental.UseCases.Cars.GetAll.ListAllCarsQuery).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CarRental.Application.Cars.GetAll.ListAllCarsQuery).Assembly);
 });
 
 /// 🔐 JWT Auth
@@ -186,7 +186,7 @@ builder.Services.AddSwaggerGen(c =>
 
     var basePath = AppContext.BaseDirectory;
     c.IncludeXmlComments(Path.Combine(basePath, "CarRental.API.xml"));
-    c.IncludeXmlComments(Path.Combine(basePath, "CarRental.UseCases.xml"));
+    c.IncludeXmlComments(Path.Combine(basePath, "CarRental.Application.xml"));
 
     /// Habilito el botón de Autorización en Swagger para JWT
     /// Habilitar JWT  Bearer Authorization en Swagger

@@ -55,15 +55,16 @@ https://localhost:7263/alive
 ```
 /src
  ├── CarRental.API            → REST API Layer
- ├── CarRental.Core           → Port interfaces
+ ├── CarRental.Application.Abstractions → Port interfaces
  ├── CarRental.Domain         → Domain model
  ├── CarRental.Infrastructure → EF Core, Identity, Email, Logging
- └── CarRental.UseCases       → CQRS Handlers and DTOs
+ └── CarRental.Application    → CQRS Handlers and DTOs
 /tests
  ├── CarRental.Tests.Functional   → End-to-end tests
  ├── CarRental.Tests.Integration  → DB and repository tests
- └── CarRental.Tests.UseCases     → Unit tests for use cases
+ └── CarRental.Tests.Application  → Application-layer unit tests
 ```
+> ℹ️ As of March 2025 the former `CarRental.Core` and `CarRental.UseCases` projects are named `CarRental.Application.Abstractions` and `CarRental.Application`; delete any stale local folders before building.
 
 ---
 
@@ -78,7 +79,7 @@ https://localhost:7263/alive
 Run tests:
 
 ```bash
-cd tests/CarRental.Tests.UseCases
+cd tests/CarRental.Tests.Application
 dotnet test --collect:"XPlat Code Coverage"
 ```
 

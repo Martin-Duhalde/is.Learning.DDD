@@ -1,7 +1,7 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 
-using CarRental.Core.Interfaces;
-using CarRental.Core.Repositories;
+using CarRental.Application.Abstractions.Interfaces;
+using CarRental.Application.Abstractions.Repositories;
 using CarRental.Domain.Entities;
 using CarRental.Domain.Exceptions;
 

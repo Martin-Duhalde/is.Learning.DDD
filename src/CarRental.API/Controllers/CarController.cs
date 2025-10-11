@@ -1,8 +1,8 @@
-﻿using CarRental.UseCases.Cars.Create;
-using CarRental.UseCases.Cars.Delete;
-using CarRental.UseCases.Cars.GetAll;
-using CarRental.UseCases.Cars.GetById;
-using CarRental.UseCases.Cars.Update;
+﻿using CarRental.Application.Cars.Create;
+using CarRental.Application.Cars.Delete;
+using CarRental.Application.Cars.GetAll;
+using CarRental.Application.Cars.GetById;
+using CarRental.Application.Cars.Update;
 
 using MediatR;
 

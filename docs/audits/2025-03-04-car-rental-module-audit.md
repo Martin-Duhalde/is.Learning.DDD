@@ -7,8 +7,8 @@
 
 ## Findings
 ### High Severity
-1. `src/CarRental.UseCases/Cars/GetById/GetCarByIdQueryHandler.cs` acopla la capa de aplicación con `CarRentalDbContext` y expone entidades de dominio directamente; viola las dependencias DDD y dificulta mocked testing o migración a otros stores.
-2. `src/CarRental.UseCases/Rentals/CheckAvailability/CheckAvailabilityQueryHandler.cs` realiza filtrado en memoria y bucles `IsAvailableAsync` (N+1). Impacto crítico en sets grandes; debería delegar en consultas agregadas repositorio o especificaciones.
+1. `src/CarRental.Application/Cars/GetById/GetCarByIdQueryHandler.cs` acopla la capa de aplicación con `CarRentalDbContext` y expone entidades de dominio directamente; viola las dependencias DDD y dificulta mocked testing o migración a otros stores.
+2. `src/CarRental.Application/Rentals/CheckAvailability/CheckAvailabilityQueryHandler.cs` realiza filtrado en memoria y bucles `IsAvailableAsync` (N+1). Impacto crítico en sets grandes; debería delegar en consultas agregadas repositorio o especificaciones.
 3. `src/CarRental.Infrastructure/Repositories/EfRepository.cs` (`DeleteAsync`) ignora control de versiones. Incrementa versión sin comparar contra la persistida, permitiendo sobrescritura de eliminaciones concurrentes.
 4. `src/CarRental.Infrastructure/Auth/AuthService.cs` registra usuario y crea `Customer` sin transacción. Falla al persistir el cliente deja usuario Identity sin cliente asociado.
 
@@ -20,7 +20,7 @@
 
 ### Low Severity
 1. Flag `fakeEmail` hardcodeado en `src/CarRental.API/Program.cs`; sin configuración para alternar proveedores.
-2. Archivo `src/CarRental.Core/Interfaces/IEmailSender.cs` declara `IEmailService`; naming inconsistente y confuso.
+2. Archivo `src/CarRental.Application.Abstractions/Interfaces/IEmailSender.cs` declara `IEmailService`; naming inconsistente y confuso.
 
 ## Recomendaciones
 ### Correcciones inmediatas
@@ -37,7 +37,7 @@
 - Métodos ricos (`MarkAsPaid`, `Cancel`, `RegisterPayment`) que disparen eventos (`OrderPaidDomainEvent`, `OrderCancelledDomainEvent`).
 - `Rental` emite `RentalCreatedDomainEvent` y `RentalCancelledDomainEvent` para sincronizar órdenes.
 
-### Core Interfaces
+### Application Abstractions
 - `IRentalOrderRepository`, `IPaymentRepository` derivados de `IRepository<T>`.
 - `IPricingService` (calcula fees, impuestos, depósitos) y `IPaymentGateway` (adapta Stripe, MercadoPago, etc.).
 
@@ -71,4 +71,3 @@
 1. Normalizar registro MediatR/DI y añadir filtros globales + controles de concurrencia.
 2. Refactorizar entidades para encapsular lógica de negocio antes de expandir el dominio.
 3. Implementar módulo descrito con migraciones y pruebas automáticas.
-
