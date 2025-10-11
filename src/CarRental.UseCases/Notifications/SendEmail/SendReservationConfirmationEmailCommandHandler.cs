@@ -3,11 +3,7 @@
 using CarRental.Core.Interfaces;
 using CarRental.Core.Repositories;
 using CarRental.Domain.Exceptions;
-using CarRental.Infrastructure.Auth;
-
 using MediatR;
-
-using Microsoft.AspNetCore.Identity;
 
 namespace CarRental.UseCases.Notifications.SendEmail;
 
@@ -20,13 +16,13 @@ public class SendReservationConfirmationEmailCommandHandler : IRequestHandler<Se
 {
     private readonly IRentalRepository              /**/ _rentalRepository;
     private readonly IEmailService                  /**/ _emailService;
-    private readonly UserManager<ApplicationUser>   /**/ _userManager;
+    private readonly IUserDirectory                 /**/ _userDirectory;
 
-    public SendReservationConfirmationEmailCommandHandler(IRentalRepository rentalRepo, IEmailService emailService, UserManager<ApplicationUser> userManager)
+    public SendReservationConfirmationEmailCommandHandler(IRentalRepository rentalRepo, IEmailService emailService, IUserDirectory userDirectory)
     {
         _rentalRepository   /**/ = rentalRepo;
         _emailService       /**/ = emailService;
-        _userManager        /**/ = userManager;
+        _userDirectory      /**/ = userDirectory;
     }
 
     public async Task<Unit> Handle(SendReservationConfirmationEmailCommand request, CancellationToken cancellationToken)
@@ -37,7 +33,8 @@ public class SendReservationConfirmationEmailCommandHandler : IRequestHandler<Se
         if (rental.Customer == null)                                            /**/ throw new DomainException("Rental Customer data is missing.");
         if (string.IsNullOrEmpty(rental.Customer.UserId))                       /**/ throw new DomainException("Customer UserId is missing.");
 
-        var user = await _userManager.FindByIdAsync(rental.Customer.UserId) ??  /**/ throw new DomainException("User not found.");
+        var user = await _userDirectory.GetByIdAsync(rental.Customer.UserId, cancellationToken)
+                   ?? throw new DomainException("User not found.");
 
         if (string.IsNullOrEmpty(user.Email))                                   /**/ throw new DomainException("User email is missing.");
         if (rental.Car == null)                                                 /**/ throw new DomainException("Rental Car data is missing.");
@@ -52,7 +49,7 @@ public class SendReservationConfirmationEmailCommandHandler : IRequestHandler<Se
                    $"Rental period: {rental.StartDate:yyyy-MM-dd} to {rental.EndDate:yyyy-MM-dd}\n\n" +
                    "Thank you for choosing our service.";
 
-        await _emailService.SendEmailAsync(user.Email, "noreply@carrental.com", "Car Rental Confirmation", body);
+        await _emailService.SendEmailAsync(user.Email!, "noreply@carrental.com", "Car Rental Confirmation", body);
 
         return Unit.Value;
     }

@@ -1,29 +1,20 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 
+using CarRental.Core.Repositories;
 using CarRental.Domain.Entities;
 using CarRental.Domain.Exceptions;
 using CarRental.UseCases.Cars.GetById;
-
-using Microsoft.EntityFrameworkCore;
 
 namespace CarRental.Tests.UseCases.Cars;
 
 public class GetCarByIdQueryHandlerTests
 {
-    private readonly DbContextOptions<CarRental.Infrastructure.Databases.CarRentalDbContext> /**/ _dbOptions;
-    private readonly CarRental.Infrastructure.Databases.CarRentalDbContext /**/ _db;
+    private readonly ICarRepository          /**/ _carRepository = Substitute.For<ICarRepository>();
     private readonly GetCarByIdQueryHandler /**/ _handler;
 
     public GetCarByIdQueryHandlerTests()
     {
-        _dbOptions = new DbContextOptionsBuilder<CarRental.Infrastructure.Databases.CarRentalDbContext>()
-                        .UseInMemoryDatabase(databaseName: "CarRentalDb_" + Guid.NewGuid())
-                        .Options;
-
-        _db = new CarRental.Infrastructure.Databases.CarRentalDbContext(_dbOptions);
-        _db.Database.EnsureCreated();
-
-        _handler = new GetCarByIdQueryHandler(_db);
+        _handler = new GetCarByIdQueryHandler(_carRepository);
     }
 
     [Fact]
@@ -40,8 +31,8 @@ public class GetCarByIdQueryHandlerTests
             Version = 1
         };
 
-        await _db.Cars.AddAsync(car);
-        await _db.SaveChangesAsync();
+        _carRepository.GetActiveByIdAsync(carId, Arg.Any<CancellationToken>())
+                      .Returns(car);
 
         var query = new GetCarByIdQuery(carId);
 
@@ -62,6 +53,8 @@ public class GetCarByIdQueryHandlerTests
     {
         // Arrange
         var nonExistentCarId = Guid.NewGuid();
+        _carRepository.GetActiveByIdAsync(nonExistentCarId, Arg.Any<CancellationToken>())
+                      .Returns((Car?)null);
         var query = new GetCarByIdQuery(nonExistentCarId);
 
         // Act + Assert

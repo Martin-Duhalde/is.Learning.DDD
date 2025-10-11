@@ -29,6 +29,7 @@ public static class DependencyInjection
 
         /// 💾 AuthService
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IUserDirectory, UserDirectory>();
         return services;
     }
 }

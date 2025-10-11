@@ -3,12 +3,11 @@
 using CarRental.Core.Interfaces;
 using CarRental.Domain.Entities;
 using CarRental.Domain.Exceptions;
-using CarRental.Infrastructure.Auth;
 using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Repositories;
 using CarRental.UseCases.Notifications.SendEmail;
 
-using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 using Moq;
 
@@ -19,7 +18,7 @@ public class SendReservationConfirmationEmailCommandHandlerTests
     private readonly CarRentalDbContext                             /**/ _db;
     private readonly EfRentalRepository                             /**/ _rentalRepo;
     private readonly Mock<IEmailService>                            /**/ _emailServiceMock;
-    private readonly Mock<UserManager<ApplicationUser>>             /**/ _userManagerMock;
+    private readonly Mock<IUserDirectory>                           /**/ _userDirectoryMock;
     private readonly SendReservationConfirmationEmailCommandHandler /**/ _handler;
 
     public SendReservationConfirmationEmailCommandHandlerTests()
@@ -36,35 +35,13 @@ public class SendReservationConfirmationEmailCommandHandlerTests
 
         // Mock IEmailService
         _emailServiceMock = new Mock<IEmailService>();
-
-        // Mock UserManager<ApplicationUser>
-        var storeMock = new Mock<IUserStore<ApplicationUser>>();
-        var optionsMock = new Mock<Microsoft.Extensions.Options.IOptions<IdentityOptions>>();
-        var passwordHasherMock = new Mock<IPasswordHasher<ApplicationUser>>();
-        var userValidators = new List<IUserValidator<ApplicationUser>> { new Mock<IUserValidator<ApplicationUser>>().Object };
-        var passwordValidators = new List<IPasswordValidator<ApplicationUser>> { new Mock<IPasswordValidator<ApplicationUser>>().Object };
-        var keyNormalizerMock = new Mock<ILookupNormalizer>();
-        var errorsMock = new Mock<IdentityErrorDescriber>();
-        var servicesMock = new Mock<IServiceProvider>();
-        var loggerMock = new Mock<Microsoft.Extensions.Logging.ILogger<UserManager<ApplicationUser>>>();
-
-        _userManagerMock = new Mock<UserManager<ApplicationUser>>(
-            storeMock.Object,
-            optionsMock.Object,
-            passwordHasherMock.Object,
-            userValidators,
-            passwordValidators,
-            keyNormalizerMock.Object,
-            errorsMock.Object,
-            servicesMock.Object,
-            loggerMock.Object
-        );
+        _userDirectoryMock = new Mock<IUserDirectory>();
 
         // Inicializar handler con mocks y repo real
         _handler = new SendReservationConfirmationEmailCommandHandler(
             _rentalRepo,
             _emailServiceMock.Object,
-            _userManagerMock.Object
+            _userDirectoryMock.Object
         );
     }
 
@@ -105,16 +82,10 @@ public class SendReservationConfirmationEmailCommandHandlerTests
         await _db.Rentals.AddAsync(rental);
         await _db.SaveChangesAsync();
 
-        // Mock UserManager.FindByIdAsync para devolver usuario con email
-        var appUser = new ApplicationUser
-        {
-            Id = customerUserId,
-            Email = "john@example.com"
-        };
-
-        _userManagerMock
-            .Setup(u => u.FindByIdAsync(customerUserId))
-            .ReturnsAsync(appUser);
+        // Mock IUserDirectory para devolver usuario con email
+        _userDirectoryMock
+            .Setup(u => u.GetByIdAsync(customerUserId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new UserDirectoryEntry("john@example.com"));
 
         // Act
         var command = new SendReservationConfirmationEmailCommand(rental.Id);
@@ -143,27 +114,7 @@ public class SendReservationConfirmationEmailCommandHandlerTests
         Assert.Equal("Rental not found.", ex.Message);
     }
 
-    [Fact]
-    public async Task should_throw_when_rental_has_no_customer()
-    {
-        // Arrange
-        var rental = new Rental
-        {
-            Id = Guid.NewGuid(),
-            StartDate = DateTime.UtcNow,
-            EndDate = DateTime.UtcNow.AddDays(1),
-            Car = new Car { Model = "Model X", Type = "SUV" }
-        };
-
-        await _db.Rentals.AddAsync(rental);
-        await _db.SaveChangesAsync();
-
-        var command = new SendReservationConfirmationEmailCommand(rental.Id);
-
-        // Act & Assert
-        var ex = await Assert.ThrowsAsync<DomainException>(() => _handler.Handle(command, default));
-        Assert.Equal("Rental not found.", ex.Message);
-    }
+    // Caso "Rental sin Customer" se valida en pruebas de UseCases donde el repositorio se stubbea.
     [Fact]
     public async Task should_throw_when_customer_has_no_userid()
     {
@@ -200,7 +151,9 @@ public class SendReservationConfirmationEmailCommandHandlerTests
         await _db.Rentals.AddAsync(rental);
         await _db.SaveChangesAsync();
 
-        _userManagerMock.Setup(u => u.FindByIdAsync("user-404")).ReturnsAsync((ApplicationUser?)null);
+        _userDirectoryMock
+            .Setup(u => u.GetByIdAsync("user-404", It.IsAny<CancellationToken>()))
+            .ReturnsAsync((UserDirectoryEntry?)null);
 
         var command = new SendReservationConfirmationEmailCommand(rental.Id);
 
@@ -223,9 +176,9 @@ public class SendReservationConfirmationEmailCommandHandlerTests
         await _db.Rentals.AddAsync(rental);
         await _db.SaveChangesAsync();
 
-        var user = new ApplicationUser { Id = "user-123", Email = "" };
-
-        _userManagerMock.Setup(u => u.FindByIdAsync("user-123")).ReturnsAsync(user);
+        _userDirectoryMock
+            .Setup(u => u.GetByIdAsync("user-123", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new UserDirectoryEntry(string.Empty));
 
         var command = new SendReservationConfirmationEmailCommand(rental.Id);
 
@@ -233,27 +186,5 @@ public class SendReservationConfirmationEmailCommandHandlerTests
         Assert.Equal("User email is missing.", ex.Message);
     }
 
-    [Fact]
-    public async Task should_throw_when_rental_has_no_car()
-    {
-        var rental = new Rental
-        {
-            Id = Guid.NewGuid(),
-            StartDate = DateTime.UtcNow,
-            EndDate = DateTime.UtcNow.AddDays(1),
-            Customer = new Customer { FullName = "Tom", UserId = "u-1" }
-        };
-
-        await _db.Rentals.AddAsync(rental);
-        await _db.SaveChangesAsync();
-
-        var user = new ApplicationUser { Id = "u-1", Email = "tom@example.com" };
-
-        _userManagerMock.Setup(u => u.FindByIdAsync("u-1")).ReturnsAsync(user);
-
-        var command = new SendReservationConfirmationEmailCommand(rental.Id);
-
-        var ex = await Assert.ThrowsAsync<DomainException>(() => _handler.Handle(command, default));
-        Assert.Equal("Rental not found.", ex.Message);
-    }
+    // Caso "Rental sin Car" se valida en pruebas de UseCases donde el repositorio se stubbea.
 }
