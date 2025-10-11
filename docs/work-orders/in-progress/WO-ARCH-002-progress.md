@@ -1,7 +1,6 @@
 ## 2025-03-05 – Avance temporal
 
 - Se reemplazó `CarRentalDbContext` por `ICarRepository` en `src/CarRental.UseCases/Cars/GetById/GetCarByIdQueryHandler.cs`, siguiendo el patrón de `ListAllCarsQueryHandler`.
-- Cambios locales aún no confirmados en Git; pendiente documentar en archivo principal cuando se complete la orden.
 - Handler de confirmación de reserva desacoplado de Identity mediante puerto `IUserDirectory`; implementación `UserDirectory` registrada en Infrastructure y pruebas actualizadas.
 - Pruebas de `GetCarByIdQueryHandler` ahora mockean `ICarRepository`, eliminando la dependencia a Infrastructure en la capa de casos de uso.
 - Prueba de integración `should_throw_when_rental_has_no_car` ajustada para persistir cliente y reproducir correctamente el escenario de auto faltante tras desacople.
