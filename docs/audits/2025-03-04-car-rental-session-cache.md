@@ -36,7 +36,7 @@
 ## Next Actions Checklist
 - [ ] Normalize MediatR registration & DI configuration.
 - [x] (2025-03-07) Global `IsActive` query filters configurados en `CarRentalDbContext`.
-- [ ] Añadir controles de concurrencia en delete/cancel.
+- [x] (2025-03-07) Concurrency guard agregado en `EfRepository.DeleteAsync`.
 - [ ] Refactor domain entities to encapsulate invariants.
 - [ ] Implement order/payment module per proposal.
 - [ ] Update docs/tests/migrations accordingly.

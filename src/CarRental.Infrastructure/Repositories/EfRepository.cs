@@ -33,9 +33,13 @@ public class EfRepository<T> : IRepository<T> where T : class, IEntity
         if (existing == null)       /**/ throw new DomainException("Entity not found");
         if (!existing.IsActive)     /**/ throw new DomainException("Entity already deleted.");
 
+        // Concurrency control: bloquea borrados con versión desactualizada
+        if (existing.Version != entity.Version)
+            throw new DomainException("Entity was modified by another process. (Concurrency Exception)");
+
         // Soft delete: mark status as Deleted and increment version
         entity.IsActive = false;
-        entity.Version++;
+        entity.Version = existing.Version + 1;
         
         _db.Set<T>().Update(entity);
         await _db.SaveChangesAsync(ct);

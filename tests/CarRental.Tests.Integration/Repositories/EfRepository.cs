@@ -89,6 +89,23 @@ public class EfRepositoryTest
             .WithMessage("Entity already deleted.");
     }
 
+    /// 🧪 validates: DeleteAsync enforces version concurrency
+    [Fact]
+    public async Task should_throw_on_concurrency_conflict_when_deleting()
+    {
+        using var context = new CarRentalDbContext(_dbOptions);
+        var repository = new EfRepository<Customer>(context);
+
+        var entity = new Customer { FullName = "Outdated Delete" };
+        await repository.AddAsync(entity);
+
+        entity.Version = 999; // simula versión desactualizada
+
+        var act = async () => await repository.DeleteAsync(entity);
+        await act.Should().ThrowAsync<DomainException>()
+            .WithMessage("Entity was modified by another process. (Concurrency Exception)");
+    }
+
     /// 🧪 validates: UpdateAsync updates fields and increments Version
     [Fact]
     public async Task should_update_entity_and_increment_version()
