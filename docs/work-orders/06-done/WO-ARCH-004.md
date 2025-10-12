@@ -8,11 +8,11 @@
 Unificar la configuración de MediatR en la API en una única llamada que registre handlers relevantes y el `ValidationBehavior`.
 
 ## Plan de acción
-1. Revisar las secciones actuales de `builder.Services.AddMediatR` en `src/CarRental.API/Program.cs` para enumerar assemblies y behaviors registrados.
-2. Diseñar la configuración consolidada asegurando que incluye `Assembly.GetExecutingAssembly()`, ensamblados de aplicación y `ValidationBehavior<,>` en el pipeline.
-3. Reemplazar las tres llamadas existentes por la nueva configuración unificada y limpiar comentarios obsoletos.
-4. Ejecutar `dotnet build CarRental.sln` (y pruebas rápidas si aplica) para validar que los handlers continúan resolviéndose correctamente.
-5. Actualizar la documentación correspondiente (`docs/audits/2025-03-04-car-rental-session-cache.md`) con la decisión tomada.
+1. Revisar las secciones actuales de `builder.Services.AddMediatR` en `src/CarRental.API/Program.cs` para enumerar assemblies y behaviors registrados. ✅
+2. Diseñar la configuración consolidada asegurando que incluye `Assembly.GetExecutingAssembly()`, ensamblados de aplicación y `ValidationBehavior<,>` en el pipeline. ✅
+3. Reemplazar las tres llamadas existentes por la nueva configuración unificada y limpiar comentarios obsoletos. ✅
+4. Ejecutar `dotnet build CarRental.sln` (y pruebas rápidas si aplica) para validar que los handlers continúan resolviéndose correctamente. ✅ (ejecutado por usuario, build + tests OK)
+5. Actualizar la documentación correspondiente (`docs/audits/2025-03-04-car-rental-session-cache.md`) con la decisión tomada. ✅
 
 ## Criterios de aceptación
 - Solo existe una llamada a `AddMediatR` en `Program.cs` y registra `ValidationBehavior<,>`.
@@ -23,4 +23,4 @@ Unificar la configuración de MediatR en la API en una única llamada que regist
 ## Seguimiento
 - Responsable actual: Codex (GPT-5).
 - Dependencias: ninguna externa; requiere permisos de escritura en `src/CarRental.API/Program.cs`.
-- Próximo checkpoint: aplicar cambios en código y ejecutar build.
+- Estado: criterios de aceptación cumplidos, listo para mover a “Done”.

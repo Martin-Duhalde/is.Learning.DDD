@@ -119,17 +119,14 @@ if (!fakeEmail)  /**/ builder.Services.AddScoped<IEmailService, MimeKitEmailSend
 ///          
 CarRental.Infrastructure.DependencyInjection.AddInfrastructure(builder.Services);
 
-/// Add MediatR
-builder.Services.AddMediatR(cfg =>
-    cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-
-/// Register Asemblys for MediatR: 
-///     CarRental.Application
-///     CarRental.Application
+/// MediatR (handlers + behaviors)
 builder.Services.AddMediatR(cfg =>
 {
-    cfg.RegisterServicesFromAssembly(typeof(CreateRentalCommandHandler).Assembly);
-    cfg.RegisterServicesFromAssembly(typeof(CarRental.Application.Cars.GetAll.ListAllCarsQuery).Assembly);
+    cfg.RegisterServicesFromAssemblies(
+        Assembly.GetExecutingAssembly(),
+        typeof(CreateRentalCommandHandler).Assembly,
+        typeof(CarRental.Application.Cars.GetAll.ListAllCarsQuery).Assembly);
+    cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
 
 /// 🔐 JWT Auth
@@ -162,14 +159,8 @@ builder.Services.AddAutoMapper(cfg =>
 });
 
 /// FluentValidation
-///  1. Registrar todos los validadores de los ensamblados
+/// Registrar todos los validadores de los ensamblados
 builder.Services.AddValidatorsFromAssemblyContaining<CreateRentalCommandValidator>();
-/// 2. Registrar los handlers y agregar el pipeline de validación
-builder.Services.AddMediatR(cfg =>
-{
-    cfg.RegisterServicesFromAssemblyContaining<CreateRentalCommand>();  /// Handlers
-    cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));                 /// 👈  Middleware de validación
-});
 
 
 /// AddOpenApi (AddScalar and Swagger)

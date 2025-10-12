@@ -18,6 +18,7 @@ Establecer pautas para cualquier agente Codex que colabore en `DDD.CarRental`, d
 3. Respetar arquitectura DDD actual: separar Dominio/Application.Abstractions/Application/Infra/API; no introducir dependencias cruzadas que violen capas.
 4. Verificar que documentación, scripts y namespaces usen la nomenclatura vigente (`CarRental.Application.Abstractions`, `CarRental.Application`) antes de cerrar una tarea.
 5. Para compilaciones y pruebas, solicitar al usuario la ejecución: el sandbox actual no permite completarlas con éxito y agotan recursos sin resultados útiles.
+6. No realizar commits de git; delegar el versionado al usuario.
 
 ## Workflow sugerido para nuevas tareas
 1. **Revisar estado actual**: leer roadmap y checklist para conocer pendientes.

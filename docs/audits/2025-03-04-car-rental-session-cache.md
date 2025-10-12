@@ -39,4 +39,4 @@
 - [ ] Refactor domain entities to encapsulate invariants.
 - [ ] Implement order/payment module per proposal.
 - [ ] Update docs/tests/migrations accordingly.
-
+- [x] (2025-03-07, WO-ARCH-004) MediatR registration consolidated en `Program.cs`; build/tests pendientes de ejecutar fuera del sandbox.
