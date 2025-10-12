@@ -27,6 +27,18 @@ public class CarRentalDbContext : IdentityDbContext<ApplicationUser> //: DbConte
             OnModelCreatingSQLServer(modelBuilder);
         }
 
+        modelBuilder.Entity<Customer>()
+            .HasQueryFilter(customer => customer.IsActive);
+
+        modelBuilder.Entity<Car>()
+            .HasQueryFilter(car => car.IsActive);
+
+        modelBuilder.Entity<Rental>()
+            .HasQueryFilter(rental => rental.IsActive);
+
+        modelBuilder.Entity<Service>()
+            .HasQueryFilter(service => service.IsActive);
+
         modelBuilder.Entity<Car>()
             .HasMany(c => c.Services)
             .WithOne(s => s.Car)

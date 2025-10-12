@@ -20,7 +20,8 @@ Unificar la configuración de MediatR en la API en una única llamada que regist
 - Build (`dotnet build CarRental.sln`) finaliza correctamente tras el cambio.
 - Se documenta la consolidación en la sesión o guía correspondiente.
 
-## Seguimiento
-- Responsable actual: Codex (GPT-5).
-- Dependencias: ninguna externa; requiere permisos de escritura en `src/CarRental.API/Program.cs`.
-- Estado: criterios de aceptación cumplidos, listo para mover a “Done”.
+## Resultados
+- Configuración MediatR consolidada en una sola llamada dentro de `src/CarRental.API/Program.cs`, incluyendo `ValidationBehavior<,>`.
+- Filtros globales `HasQueryFilter` añadidos a `CarRentalDbContext` y repositorios actualizados para evitar duplicidad de condiciones `IsActive`.
+- Ajustes en repositorios (`IgnoreQueryFilters`) y pruebas de integración para mantener validaciones de soft delete y excepciones de negocio.
+- Build y suites de pruebas confirmadas por el usuario tras los cambios.

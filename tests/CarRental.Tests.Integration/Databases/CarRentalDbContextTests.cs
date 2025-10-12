@@ -102,22 +102,38 @@ public class CarRentalDbContextTests
     [Fact]
     public async Task Should_Persist_IsActive_LogicalDelete()
     {
-        using var context = CreateContext();
+        var options = GetInMemoryOptions();
 
-        var customer = new Customer { FullName = "Inactive Customer", IsActive = false, UserId = "user-x" };
-        var car = new Car { Model = "Chevy", Type = "Hatch", IsActive = false };
-        var service = new Service { Car = car, Date = DateTime.UtcNow, IsActive = false };
+        using (var arrangeContext = new CarRentalDbContext(options))
+        {
+            var customer = new Customer { FullName = "Inactive Customer", IsActive = false, UserId = "user-x" };
+            var car = new Car { Model = "Chevy", Type = "Hatch", IsActive = false };
+            var service = new Service { Car = car, Date = DateTime.UtcNow, IsActive = false };
 
-        context.AddRange(customer, car, service);
-        await context.SaveChangesAsync();
+            arrangeContext.AddRange(customer, car, service);
+            await arrangeContext.SaveChangesAsync();
+        }
 
-        var savedCustomer = await context.Customers.FirstAsync();
-        var savedCar = await context.Cars.FirstAsync();
-        var savedService = await context.Services.FirstAsync();
+        using var assertContext = new CarRentalDbContext(options);
 
-        Assert.False(savedCustomer.IsActive);
-        Assert.False(savedCar.IsActive);
-        Assert.False(savedService.IsActive);
+        var savedCustomer = await assertContext.Customers
+            .IgnoreQueryFilters()
+            .FirstOrDefaultAsync();
+        var savedCar = await assertContext.Cars
+            .IgnoreQueryFilters()
+            .FirstOrDefaultAsync();
+        var savedService = await assertContext.Services
+            .IgnoreQueryFilters()
+            .FirstOrDefaultAsync();
+
+        Assert.NotNull(savedCustomer);
+        Assert.False(savedCustomer!.IsActive);
+
+        Assert.NotNull(savedCar);
+        Assert.False(savedCar!.IsActive);
+
+        Assert.NotNull(savedService);
+        Assert.False(savedService!.IsActive);
     }
 
     [Fact]

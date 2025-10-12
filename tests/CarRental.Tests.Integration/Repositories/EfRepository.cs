@@ -50,7 +50,11 @@ public class EfRepositoryTest
 
         await repository.DeleteAsync(entity);
 
-        var deleted = await context.Customers.FirstOrDefaultAsync();
+        var deleted = await context.Customers
+            .IgnoreQueryFilters()                    // Se ignora el filtro global para verificar el soft-delete persistido
+            .FirstOrDefaultAsync();
+
+        deleted.Should().NotBeNull();
         deleted!.IsActive.Should().BeFalse();
         deleted.Version.Should().Be(2);
     }

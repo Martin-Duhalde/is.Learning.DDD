@@ -26,6 +26,7 @@ public class EfRepository<T> : IRepository<T> where T : class, IEntity
     {
         // Retrieve the current entity from the database
         var existing = await _db.Set<T>()
+            .IgnoreQueryFilters()                                  // Ignoramos filtros globales para validar soft-delete/manual
             .AsNoTracking()
             .FirstOrDefaultAsync(e => e.Id == entity.Id, ct);
 
@@ -72,7 +73,7 @@ public class EfRepository<T> : IRepository<T> where T : class, IEntity
     {
         var entity = await _db.Set<T>().FindAsync(new object[] { id }, ct);
 
-        /// Filter out deleted entities here
+        // FindAsync ignora los HasQueryFilter; validamos IsActive manualmente antes de exponerlo.
         if (entity is null || !entity.IsActive)
             return null;
 
