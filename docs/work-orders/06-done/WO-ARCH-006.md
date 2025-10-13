@@ -11,6 +11,7 @@ completed: 2025-03-08
 
 ## Acciones
 - Se inyectó `IMapper` en `CarController` para mapear `CreateCarRequestDto` y `UpdateCarDto` hacia los comandos antes de invocarlos con MediatR (`src/CarRental.API/Controllers/CarController.cs`).
+- `RentalController` ahora recibe `ModifyRentalRequestDto` y compone `ModifyRentalCommand` internamente, evitando exponer el comando como contrato (`src/CarRental.API/Controllers/RentalController.cs`).
 - Se ajustó el bootstrap de AutoMapper para registrar toda la asamblea de `CarRental.Application` (`src/CarRental.API/Program.cs`).
 - Se documentaron los cambios y la necesidad de validar pruebas fuera del sandbox.
 

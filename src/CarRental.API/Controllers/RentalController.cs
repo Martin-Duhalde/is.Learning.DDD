@@ -103,17 +103,28 @@ public class RentalController(ILogger<RentalController> logger, IMediator mediat
     /// </summary>
     /// <remarks>
     /// Updates the rental details, such as dates or assigned car.
-    /// The rental ID in the URL must match the one in the request body.
+    /// The rental ID is supplied from the URL; the payload only carries the new date range and an optional car.
     /// Only active rentals can be modified.
     /// </remarks>
     [HttpPut("{id:guid}")]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(ErrorResponseDto), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ModifyRental(Guid id, ModifyRentalCommand command)
+    public async Task<IActionResult> ModifyRental(Guid id, ModifyRentalRequestDto request)
     {
-        if (id != command.RentalId)
-            return BadRequest(new ErrorResponseDto { Error = "ID mismatch", Details = "RentalId in body must match URL." });
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        if (request.NewEndDate <= request.NewStartDate)
+        {
+            return BadRequest(new ErrorResponseDto
+            {
+                Error = "Invalid date range",
+                Details = "End date must be after start date."
+            });
+        }
+
+        var command = new ModifyRentalCommand(id, request.NewStartDate, request.NewEndDate, request.NewCarId);
 
         await _mediator.Send(command);
         return NoContent();
