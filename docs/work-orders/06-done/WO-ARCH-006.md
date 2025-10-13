@@ -1,9 +1,4 @@
----
-wo: WO-ARCH-006
-title: Normalizar contratos HTTP del CarController
-status: Done
-completed: 2025-03-08
----
+﻿# WO-ARCH-006 – Normalizar contratos HTTP del CarController
 
 ## Contexto
 - Se detectó que `CarController` exponía comandos de aplicación como contratos HTTP, lo que acoplaba la API a MediatR.

@@ -5,6 +5,7 @@ using CarRental.Application.Abstractions.Repositories;
 using CarRental.Infrastructure.Auth;
 using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Repositories;
+using CarRental.Infrastructure.Services;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,6 +32,7 @@ public static class DependencyInjection
         /// 💾 AuthService
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IUserDirectory, UserDirectory>();
+        services.AddScoped<ICarAvailabilityReadService, CarAvailabilityReadService>();
         return services;
     }
 }

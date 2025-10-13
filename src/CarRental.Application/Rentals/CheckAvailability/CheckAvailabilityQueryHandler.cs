@@ -1,9 +1,10 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 
-using CarRental.Application.Abstractions.Repositories;
+using CarRental.Application.Abstractions.Interfaces;
 using CarRental.Application.Rentals.Dtos;
 
 using MediatR;
+using System.Linq;
 
 namespace CarRental.Application.Rentals.CheckAvailability
 {
@@ -11,38 +12,28 @@ namespace CarRental.Application.Rentals.CheckAvailability
 
     public class CheckAvailabilityQueryHandler : IRequestHandler<CheckAvailabilityQuery, List<CarAvailabilityDto>>
     {
-        private readonly ICarRepository _carRepository;
+        private readonly ICarAvailabilityReadService _availabilityService;
 
-        public CheckAvailabilityQueryHandler(ICarRepository carRepo)
+        public CheckAvailabilityQueryHandler(ICarAvailabilityReadService availabilityService)
         {
-            _carRepository = carRepo;
+            _availabilityService = availabilityService;
         }
 
         public async Task<List<CarAvailabilityDto>> Handle(CheckAvailabilityQuery request, CancellationToken cancellationToken)
         {
-            var allCars = await _carRepository.ListAllActivesAsync(cancellationToken);
+            var cars = await _availabilityService.ListAvailableAsync(
+                request.Type,
+                request.Model,
+                request.StartDate,
+                request.EndDate,
+                cancellationToken);
 
-            var filtered = allCars
-                .Where(c => c.Type == request.Type && c.Model == request.Model)
-                .ToList();
-
-            var available = new List<CarAvailabilityDto>();
-
-            foreach (var car in filtered)
+            return cars.Select(car => new CarAvailabilityDto
             {
-                var isAvailable = await _carRepository.IsAvailableAsync(car.Id, request.StartDate, request.EndDate, cancellationToken);
-                if (isAvailable)
-                {
-                    available.Add(new CarAvailabilityDto
-                    {
-                        Id      /**/ = car.Id,
-                        Model   /**/ = car.Model,
-                        Type    /**/ = car.Type
-                    });
-                }
-            }
-
-            return available;
+                Id = car.Id,
+                Model = car.Model,
+                Type = car.Type
+            }).ToList();
         }
     }
 }

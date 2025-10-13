@@ -1,6 +1,6 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 
-using CarRental.Application.Abstractions.Repositories;
+using CarRental.Application.Abstractions.Interfaces;
 using CarRental.Domain.Entities;
 using CarRental.Application.Rentals.CheckAvailability;
 
@@ -8,12 +8,12 @@ namespace CarRental.Tests.Application.Rentals;
 
 public class CheckAvailabilityQueryHandlerTests
 {
-    private readonly ICarRepository _carRepo = Substitute.For<ICarRepository>();
+    private readonly ICarAvailabilityReadService _availabilityService = Substitute.For<ICarAvailabilityReadService>();
     private readonly CheckAvailabilityQueryHandler _handler;
 
     public CheckAvailabilityQueryHandlerTests()
     {
-        _handler = new CheckAvailabilityQueryHandler(_carRepo);
+        _handler = new CheckAvailabilityQueryHandler(_availabilityService);
     }
 
     [Fact]
@@ -27,14 +27,8 @@ public class CheckAvailabilityQueryHandlerTests
         var car2 = new Car { Id = Guid.NewGuid(), Model = "ModelX", Type = "SUV" };
         var car3 = new Car { Id = Guid.NewGuid(), Model = "Another", Type = "Sedan" };
 
-        _carRepo.ListAllActivesAsync(Arg.Any<CancellationToken>())
-                .Returns([car1, car2, car3]);
-
-        _carRepo.IsAvailableAsync(car1.Id, start, end, Arg.Any<CancellationToken>())
-                .Returns(true);
-
-        _carRepo.IsAvailableAsync(car2.Id, start, end, Arg.Any<CancellationToken>())
-                .Returns(false);
+        _availabilityService.ListAvailableAsync("SUV", "ModelX", start, end, Arg.Any<CancellationToken>())
+            .Returns([car1]);
 
         var query = new CheckAvailabilityQuery(start, end, "SUV", "ModelX");
 
@@ -43,6 +37,7 @@ public class CheckAvailabilityQueryHandlerTests
 
         // Assert
         Assert.Single(result);
+        await _availabilityService.Received(1).ListAvailableAsync("SUV", "ModelX", start, end, Arg.Any<CancellationToken>());
 
         Assert.Equal(car1.Id    /**/ , result[0].Id);
         Assert.Equal("SUV"      /**/ , result[0].Type);
@@ -53,10 +48,13 @@ public class CheckAvailabilityQueryHandlerTests
     public async Task should_return_empty_list_if_no_cars_match_filters()
     {
         // Arrange
-        var car = new Car { Id = Guid.NewGuid(), Model = "Wrong", Type = "Truck" };
-
-        _carRepo.ListAllActivesAsync(Arg.Any<CancellationToken>())
-                .Returns([car]);
+        _availabilityService.ListAvailableAsync(
+                "SUV",
+                "ModelX",
+                Arg.Any<DateTime>(),
+                Arg.Any<DateTime>(),
+                Arg.Any<CancellationToken>())
+            .Returns(Array.Empty<Car>());
 
         var query = new CheckAvailabilityQuery(
             DateTime.UtcNow.AddDays(1),
@@ -68,19 +66,25 @@ public class CheckAvailabilityQueryHandlerTests
 
         // Assert
         Assert.Empty(result);
+        await _availabilityService.Received(1).ListAvailableAsync(
+            "SUV",
+            "ModelX",
+            Arg.Any<DateTime>(),
+            Arg.Any<DateTime>(),
+            Arg.Any<CancellationToken>());
     }
 
     [Fact]
     public async Task should_return_empty_list_if_no_car_is_available()
     {
         // Arrange
-        var car = new Car { Id = Guid.NewGuid(), Model = "ModelX", Type = "SUV" };
-
-        _carRepo.ListAllActivesAsync(Arg.Any<CancellationToken>())
-                .Returns([car]);
-
-        _carRepo.IsAvailableAsync(car.Id, Arg.Any<DateTime>(), Arg.Any<DateTime>(), Arg.Any<CancellationToken>())
-                .Returns(false);
+        _availabilityService.ListAvailableAsync(
+                "SUV",
+                "ModelX",
+                Arg.Any<DateTime>(),
+                Arg.Any<DateTime>(),
+                Arg.Any<CancellationToken>())
+            .Returns(Array.Empty<Car>());
 
         var query = new CheckAvailabilityQuery(
             DateTime.UtcNow.AddDays(1),
@@ -92,5 +96,11 @@ public class CheckAvailabilityQueryHandlerTests
 
         // Assert
         Assert.Empty(result);
+        await _availabilityService.Received(1).ListAvailableAsync(
+            "SUV",
+            "ModelX",
+            Arg.Any<DateTime>(),
+            Arg.Any<DateTime>(),
+            Arg.Any<CancellationToken>());
     }
 }

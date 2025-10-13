@@ -2,7 +2,7 @@
 
 using CarRental.Domain.Entities;
 using CarRental.Infrastructure.Databases;
-using CarRental.Infrastructure.Repositories;
+using CarRental.Infrastructure.Services;
 using CarRental.Application.Rentals.CheckAvailability;
 
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +12,7 @@ namespace CarRental.Tests.Integration.Rentals;
 public class CheckAvailabilityQueryHandlerTests
 {
     private readonly CarRentalDbContext             /**/ _db;
-    private readonly EfCarRepository                /**/ _carRepo;
+    private readonly CarAvailabilityReadService     /**/ _availabilityService;
     private readonly CheckAvailabilityQueryHandler  /**/ _handler;
 
     public CheckAvailabilityQueryHandlerTests()
@@ -24,8 +24,8 @@ public class CheckAvailabilityQueryHandlerTests
         _db = new CarRentalDbContext(options);
         _db.Database.EnsureCreated();
 
-        _carRepo = new EfCarRepository(_db);
-        _handler = new CheckAvailabilityQueryHandler(_carRepo);
+        _availabilityService = new CarAvailabilityReadService(_db);
+        _handler = new CheckAvailabilityQueryHandler(_availabilityService);
     }
 
     [Fact]
