@@ -155,7 +155,7 @@ builder.Services.AddAuthentication(options =>
 // 👇 AutoMapper 15.0.1
 builder.Services.AddAutoMapper(cfg =>
 {
-    cfg.AddProfile<CreateRentalMappingProfile>();
+    cfg.AddMaps(typeof(CreateRentalMappingProfile).Assembly);
 });
 
 /// FluentValidation

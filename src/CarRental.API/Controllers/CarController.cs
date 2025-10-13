@@ -1,5 +1,8 @@
-﻿using CarRental.Application.Cars.Create;
+﻿using AutoMapper;
+
+using CarRental.Application.Cars.Create;
 using CarRental.Application.Cars.Delete;
+using CarRental.Application.Cars.Dtos;
 using CarRental.Application.Cars.GetAll;
 using CarRental.Application.Cars.GetById;
 using CarRental.Application.Cars.Update;
@@ -13,17 +16,21 @@ namespace CarRental.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
+[Produces("application/json")]
 public class CarController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IMapper _mapper;
 
     /// <summary>
-    /// Constructor que recibe una instancia de <see cref="IMediator"/>.
+    /// Constructor que recibe las dependencias necesarias.
     /// </summary>
     /// <param name="mediator">Instancia de MediatR para enviar comandos y queries.</param>
-    public CarController(IMediator mediator)
+    /// <param name="mapper">Instancia de AutoMapper para traducir entre DTOs y comandos.</param>
+    public CarController(IMediator mediator, IMapper mapper)
     {
         _mediator = mediator;
+        _mapper = mapper;
     }
 
     // ─────────────────────────────────────────────────────────────────────────────
@@ -67,19 +74,21 @@ public class CarController : ControllerBase
     /// <summary>
     /// 🚗 Crea un nuevo auto.
     /// </summary>
-    /// <param name="command">Comando con los datos del auto a crear.</param>
+    /// <param name="request">DTO con los datos del auto a crear.</param>
     /// <returns><c>201</c> con la ubicación del recurso creado.</returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateCar([FromBody] CreateCarCommand command)
+    public async Task<IActionResult> CreateCar([FromBody] CreateCarRequestDto request)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
+        var command = _mapper.Map<CreateCarCommand>(request);
         var carId = await _mediator.Send(command);
+        var response = _mapper.Map<CreateCarResponseDto>(carId);
 
-        return CreatedAtAction(nameof(GetCarById), new { id = carId }, new CreateCarResponseDto(carId));
+        return CreatedAtAction(nameof(GetCarById), new { id = response.CarId }, response);
     }
 
     // ─────────────────────────────────────────────────────────────────────────────
@@ -88,19 +97,21 @@ public class CarController : ControllerBase
     /// ✏️ Actualiza los datos de un auto existente.
     /// </summary>
     /// <param name="id">Identificador del auto a actualizar.</param>
-    /// <param name="command">Comando con los nuevos datos del auto.</param>
+    /// <param name="request">DTO con los nuevos datos del auto.</param>
     /// <returns><c>204</c> si se actualizó con éxito, o <c>400</c> si hay un conflicto de ID.</returns>
     [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent  /* is Ok */  )]
     [ProducesResponseType(StatusCodes.Status400BadRequest /* error */  )]
     [ProducesResponseType(StatusCodes.Status409Conflict   /* error */  )]
-    public async Task<IActionResult> UpdateCar(Guid id, [FromBody] UpdateCarCommand command)
+    public async Task<IActionResult> UpdateCar(Guid id, [FromBody] UpdateCarDto request)
     {
-        if (id != command.Id)
+        if (id != request.Id)
             return BadRequest("El ID del parámetro no coincide con el del cuerpo.");
 
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
+
+        var command = new UpdateCarCommand(request.Id, request.Model, request.Type, request.Version);
 
         await _mediator.Send(command);
         return NoContent();
