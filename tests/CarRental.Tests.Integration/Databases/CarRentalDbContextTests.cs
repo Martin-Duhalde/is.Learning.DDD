@@ -1,6 +1,7 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 
 using CarRental.Domain.Entities;
+using CarRental.Tests.Integration.TestBuilders;
 using CarRental.Infrastructure.Databases;
 
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -60,7 +61,7 @@ public class CarRentalDbContextTests
     {
         using var context = CreateContext();
 
-        var car = new Car { Model = "Toyota", Type = "SUV" };
+        var car = Car.Restore(Guid.NewGuid(), "Toyota", "SUV", isActive: true, version: 1);
         var service = new Service { Car = car, Date = DateTime.UtcNow };
 
         context.Services.Add(service);
@@ -76,7 +77,7 @@ public class CarRentalDbContextTests
         using var context = CreateContext();
 
         var customer = new Customer { FullName = "Jane Smith", Address = "Calle 123", UserId = "user-1" };
-        var car = new Car { Model = "Ford", Type = "Sedan" };
+        var car = Car.Restore(Guid.NewGuid(), "Ford", "Sedan", isActive: true, version: 1);
 
         context.AddRange(car, customer);
         await context.SaveChangesAsync();
@@ -107,7 +108,7 @@ public class CarRentalDbContextTests
         using (var arrangeContext = new CarRentalDbContext(options))
         {
             var customer = new Customer { FullName = "Inactive Customer", IsActive = false, UserId = "user-x" };
-            var car = new Car { Model = "Chevy", Type = "Hatch", IsActive = false };
+            var car = Car.Restore(Guid.NewGuid(), "Chevy", "Hatch", isActive: false, version: 1);
             var service = new Service { Car = car, Date = DateTime.UtcNow, IsActive = false };
 
             arrangeContext.AddRange(customer, car, service);
@@ -141,7 +142,7 @@ public class CarRentalDbContextTests
     {
         using var context = CreateContext();
 
-        var car = new Car { Model = "Jeep", Type = "4x4" };
+        var car = Car.Restore(Guid.NewGuid(), "Jeep", "4x4", isActive: true, version: 1);
         var services = new[]
         {
             new Service { Car = car, Date = DateTime.UtcNow },
@@ -161,7 +162,7 @@ public class CarRentalDbContextTests
         using var context = CreateContext();
 
         var customer = new Customer { FullName = "Versioned", Version = 3, UserId = "v123" };
-        var car = new Car { Model = "Tesla", Type = "Electric", Version = 5 };
+        var car = Car.Restore(Guid.NewGuid(), "Tesla", "Electric", isActive: true, version: 5);
 
         context.AddRange(customer, car);
         await context.SaveChangesAsync();

@@ -1,6 +1,7 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 
 using CarRental.Domain.Entities;
+using CarRental.Tests.Integration.TestBuilders;
 using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Repositories;
 using CarRental.Application.Rentals.Create;
@@ -32,12 +33,7 @@ public class CreateRentalTests : IDisposable
     public async Task should_create_rental_with_real_database()
     {
         // Arrange
-        var car = new Car
-        {
-            Id      /**/ = Guid.NewGuid(),
-            Type    /**/ = "SUV",
-            Model   /**/ = "ModelX"
-        };
+        var car = Car.ForTesting(model: "ModelX", type: "SUV");
 
         _dbContext.Cars.Add(car);
         await _dbContext.SaveChangesAsync();

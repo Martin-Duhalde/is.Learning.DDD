@@ -22,14 +22,7 @@ public class GetCarByIdQueryHandlerTests
     {
         // Arrange
         var carId = Guid.NewGuid();
-        var car = new Car
-        {
-            Id = carId,
-            Model = "Test Model",
-            Type = "Test Type",
-            IsActive = true,
-            Version = 1
-        };
+        var car = Car.Restore(carId, "Test Model", "Test Type", isActive: true, version: 1);
 
         _carRepository.GetActiveByIdAsync(carId, Arg.Any<CancellationToken>())
                       .Returns(car);

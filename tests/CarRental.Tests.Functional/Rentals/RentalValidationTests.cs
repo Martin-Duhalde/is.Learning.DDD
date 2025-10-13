@@ -7,6 +7,7 @@
 ///     CarApiFlowTests  en  CarRental.Tests.Functional.Cars;
 
 using CarRental.Domain.Entities;
+using CarRental.Tests.Functional.TestBuilders;
 using CarRental.Infrastructure.Databases;
 using CarRental.Tests.Functional.Common;
 using CarRental.Application.Auth.Dtos;
@@ -36,7 +37,7 @@ public class RentalValidationTests(CustomWebApplicationFactory<Program> factory)
         using (var scope = _services.CreateScope())
         {
             var db = scope.ServiceProvider.GetRequiredService<CarRentalDbContext>();
-            var car = new Car { Id = Guid.NewGuid(), Type = "SUV", Model = "ModelX" };
+            var car = Car.Restore(Guid.NewGuid(), "ModelX", "SUV", isActive: true, version: 1);
             db.Cars.Add(car);
             await db.SaveChangesAsync();
             carId = car.Id;
@@ -121,7 +122,7 @@ public class RentalValidationTests(CustomWebApplicationFactory<Program> factory)
         using (var scope = _services.CreateScope())
         {
             var db = scope.ServiceProvider.GetRequiredService<CarRentalDbContext>();
-            var car = new Car { Id = Guid.NewGuid(), Type = "SUV", Model = "ModelX" };
+            var car = Car.Restore(Guid.NewGuid(), "ModelX", "SUV", isActive: true, version: 1);
             db.Cars.Add(car);
             await db.SaveChangesAsync();
             carId = car.Id;

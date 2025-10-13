@@ -24,14 +24,7 @@ public class UpdateCarCommandHandlerTests
     {
         // Arrange
         var carId = Guid.NewGuid();
-        var existingCar = new Car
-        {
-            Id = carId,
-            Model = "Old Model",
-            Type = "Old Type",
-            Version = 3,
-            IsActive = true
-        };
+        var existingCar = Car.Restore(carId, "Old Model", "Old Type", isActive: true, version: 3);
 
         var command = new UpdateCarCommand(carId, "New Model", "New Type", 3);
 
@@ -72,14 +65,7 @@ public class UpdateCarCommandHandlerTests
     {
         // Arrange
         var carId = Guid.NewGuid();
-        var existingCar = new Car
-        {
-            Id = carId,
-            Model = "Model",
-            Type = "Type",
-            Version = 5,
-            IsActive = true
-        };
+        var existingCar = Car.Restore(carId, "Model", "Type", isActive: true, version: 5);
 
         var command = new UpdateCarCommand(carId, "Model Updated", "Type Updated", 3); // Version mismatch
 

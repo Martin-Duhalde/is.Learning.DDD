@@ -1,6 +1,7 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 
 using CarRental.Domain.Entities;
+using CarRental.Tests.Integration.TestBuilders;
 using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Repositories;
 using CarRental.Application.Statistics.GetDashboard;

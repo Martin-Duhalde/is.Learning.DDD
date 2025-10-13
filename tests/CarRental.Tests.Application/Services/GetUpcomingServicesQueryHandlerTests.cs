@@ -176,8 +176,8 @@ public class GetUpcomingServicesQueryHandlerTests
         // Simular servicios con entidad Car asociada
         var services = new List<(string Model, string Type, DateTime Date, Car Car)>
         {
-            ("ModelX", "TypeA", from.AddDays(1), new Car { Model = "ModelX", Type = "TypeA" }),
-            ("ModelY", "TypeB", from.AddDays(3), new Car { Model = "ModelY", Type = "TypeB" })
+            ("ModelX", "TypeA", from.AddDays(1), Car.Restore(Guid.NewGuid(), "ModelX", "TypeA", isActive: true, version: 1)),
+            ("ModelY", "TypeB", from.AddDays(3), Car.Restore(Guid.NewGuid(), "ModelY", "TypeB", isActive: true, version: 1))
         };
 
         // Mock adaptado para retornar solo la tupla esperada (sin Car)
@@ -206,7 +206,7 @@ public class GetUpcomingServicesQueryHandlerTests
     [Fact]
     public void should_assign_and_read_car_navigation_property()
     {
-        var car = new Car { Model = "Civic", Type = "Sedan" };
+        var car = Car.Restore(Guid.NewGuid(), "Civic", "Sedan", isActive: true, version: 1);
         var service = new Service
         {
             Date = DateTime.Today,

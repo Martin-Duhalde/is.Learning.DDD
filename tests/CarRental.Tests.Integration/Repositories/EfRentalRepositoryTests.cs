@@ -125,32 +125,4 @@ public class EfRentalRepositoryTests
         Assert.Equal(2, count);
     }
 
-    [Fact]
-    public async Task should_cancel_rental_and_set_cancelled_at()
-    {
-        using var context = new CarRentalDbContext(_options);
-        var rentalId = Guid.NewGuid();
-
-        context.Rentals.Add(new Rental { Id = rentalId });
-        await context.SaveChangesAsync();
-
-        var repo = new EfRentalRepository(context);
-        await repo.CancelAsync(rentalId);
-
-        var rental = await context.Rentals.FindAsync(rentalId);
-
-        Assert.Equal(RentalStatus.Cancelled, rental!.RentalStatus);
-        Assert.NotNull(rental.CancelledAt);
-    }
-
-    [Fact]
-    public async Task should_do_nothing_if_rental_to_cancel_not_found()
-    {
-        using var context = new CarRentalDbContext(_options);
-        var repo = new EfRentalRepository(context);
-
-        // No exception should be thrown even if ID doesn't exist
-        var act = async () => await repo.CancelAsync(Guid.NewGuid());
-        await act();
-    }
 }

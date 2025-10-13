@@ -30,15 +30,7 @@ public class CreateCarCommandHandler : IRequestHandler<CreateCarCommand, Guid>
         /// If any active car  already exists with same model and type, block creation
         if (existingCars.Any())     /**/ throw new DomainException("A car with the same model and type already exists.");
 
-        var car = new Car
-        {
-            Id          /**/ = Guid.NewGuid(),
-            Model       /**/ = request.Model,
-            Type        /**/ = request.Type,
-            Services    /**/ = new List<Service>(),
-            IsActive    /**/ = true,                /// Default status Active on create
-            Version     /**/ = 1,                   /// Version initialized at 1
-        };
+        var car = Car.Create(request.Model, request.Type);
 
         await _carRepository.AddAsync(car, cancellationToken);
         

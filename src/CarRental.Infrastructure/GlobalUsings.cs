@@ -1,4 +1,4 @@
-/// MIT License © 2025 Martín Duhalde + ChatGPT
+/// MIT License Â© 2025 MartÃ­n Duhalde + ChatGPT
 /// 
 /// Global usings for Layer: Infrastructure
 /// 

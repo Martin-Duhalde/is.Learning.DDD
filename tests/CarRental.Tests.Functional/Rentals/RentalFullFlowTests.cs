@@ -7,6 +7,9 @@
 ///     CarApiFlowTests  en  CarRental.Tests.Functional.Cars;
 
 using CarRental.Domain.Entities;
+using CarRental.Tests.Functional.TestBuilders;
+using CarRental.Tests.Functional.TestBuilders;
+using CarRental.Tests.Functional.Rentals;
 using CarRental.Infrastructure.Databases;
 using CarRental.Tests.Functional.Common;
 
@@ -36,12 +39,7 @@ public class RentalFullFlowTests(CustomWebApplicationFactory<Program> factory) :
         {
             var db = scope.ServiceProvider.GetRequiredService<CarRentalDbContext>();
 
-            var car = new Car
-            {
-                Id      /**/ = Guid.NewGuid(),
-                Model   /**/ = "ModelX",
-                Type    /**/ = "SUV"
-            };
+            var car = DomainBuilder.BuildCar();
 
             db.Cars.Add(car);
             await db.SaveChangesAsync();

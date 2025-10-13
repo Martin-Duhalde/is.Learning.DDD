@@ -2,6 +2,7 @@
 
 using CarRental.Application.Abstractions.Repositories;
 using CarRental.Domain.Entities;
+using CarRental.Tests.Integration.TestBuilders;
 using CarRental.Infrastructure.Caching;
 
 using Microsoft.Extensions.Caching.Memory;
@@ -27,14 +28,7 @@ public class CarCachedRepositoryTests
     public async Task ShouldReturnCachedItemsAfterFirstCall()
     {
         // Arrange
-        var car = new Car
-        {
-            Id          /**/ = Guid.NewGuid(),
-            Model       /**/ = "Civic",
-            Type        /**/ = "Sedan",
-            IsActive    /**/ = true,
-            Version     /**/ = 1
-        };
+        var car = Car.ForTesting(model: "Civic", type: "Sedan", isActive: true, version: 1);
 
         var carList = new List<Car> { car };
 
@@ -63,7 +57,7 @@ public class CarCachedRepositoryTests
     [Fact]
     public async Task ListAllActivesAsync_CachesResult()
     {
-        var car  /**/ = new Car { Id = Guid.NewGuid(), Model = "Civic", Type = "Sedan", IsActive = true };
+        var car  /**/ = Car.ForTesting(model: "Civic", type: "Sedan");
         var list /**/ = new List<Car> { car };
 
         _innerRepo.Setup(r => r.ListAllActivesAsync(It.IsAny<CancellationToken>()))
@@ -87,7 +81,7 @@ public class CarCachedRepositoryTests
     {
         var model   /**/ = "Civic";
         var type    /**/ = "Sedan";
-        var car     /**/ = new Car { Id = Guid.NewGuid(), Model = model, Type = type, IsActive = true };
+        var car     /**/ = Car.ForTesting(model: model, type: type);
         var cars    /**/ = new List<Car> { car };
 
         _innerRepo.Setup(r => r.FindByModelAndTypeAsync(model, type, It.IsAny<CancellationToken>()))
@@ -109,7 +103,7 @@ public class CarCachedRepositoryTests
     [Fact]
     public async Task GetActiveByIdAsync_CachesResult()
     {
-        var car = new Car { Id = Guid.NewGuid(), Model = "Focus", Type = "Hatchback", IsActive = true };
+        var car = Car.ForTesting(model: "Focus", type: "Hatchback");
 
         _innerRepo.Setup(r => r.GetActiveByIdAsync(car.Id, It.IsAny<CancellationToken>()))
                   .ReturnsAsync(car);
@@ -146,7 +140,7 @@ public class CarCachedRepositoryTests
     [Fact]
     public async Task AddAsync_UpdatesInnerRepoAndInvalidatesCache()
     {
-        var car = new Car { Id = Guid.NewGuid() };
+        var car = Car.ForTesting(model: "Model", type: "Type");
 
         _innerRepo.Setup(r => r.AddAsync(car, It.IsAny<CancellationToken>()))
                   .Returns(Task.CompletedTask);
@@ -165,7 +159,7 @@ public class CarCachedRepositoryTests
     [Fact]
     public async Task UpdateAsync_UpdatesInnerRepoAndInvalidatesCache()
     {
-        var car = new Car { Id = Guid.NewGuid() };
+        var car = Car.ForTesting(model: "Model", type: "Type");
 
         _innerRepo.Setup(r => r.UpdateAsync(car, It.IsAny<CancellationToken>()))
                   .Returns(Task.CompletedTask);
@@ -184,7 +178,7 @@ public class CarCachedRepositoryTests
     [Fact]
     public async Task DeleteAsync_DeletesFromInnerRepoAndInvalidatesCache()
     {
-        var car = new Car { Id = Guid.NewGuid() };
+        var car = Car.ForTesting(model: "Model", type: "Type");
 
         _innerRepo.Setup(r => r.DeleteAsync(car, It.IsAny<CancellationToken>()))
                   .Returns(Task.CompletedTask);

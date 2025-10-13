@@ -257,23 +257,4 @@ public class RentalCachedRepositoryTests
         Assert.True(_memoryCache.TryGetValue(cacheKey, out _));
     }
 
-    [Fact]
-    public async Task CancelAsync_DelegatesAndInvalidatesCache()
-    {
-        var rentalId = Guid.NewGuid();
-
-        _innerRepo.Setup(r => r.CancelAsync(rentalId, It.IsAny<CancellationToken>()))
-                  .Returns(Task.CompletedTask);
-
-        // Set dummy values in cache
-        _memoryCache.Set("Rental_AllActives", new List<Rental>());
-        _memoryCache.Set($"Rental_ById_{rentalId}", new Rental { Id = rentalId });
-
-        await _cachedRepo.CancelAsync(rentalId);
-
-        _innerRepo.Verify(r => r.CancelAsync(rentalId, It.IsAny<CancellationToken>()), Times.Once);
-
-        Assert.False(_memoryCache.TryGetValue("Rental_AllActives", out _));
-        Assert.False(_memoryCache.TryGetValue($"Rental_ById_{rentalId}", out _));
-    }
 }

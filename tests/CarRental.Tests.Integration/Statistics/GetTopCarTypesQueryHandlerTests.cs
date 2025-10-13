@@ -1,6 +1,7 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 
 using CarRental.Domain.Entities;
+using CarRental.Tests.Integration.TestBuilders;
 using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Repositories;
 using CarRental.Application.Statistics.GetTopCarTypes;
@@ -37,10 +38,10 @@ public class GetTopCarTypesQueryHandlerTests
         var from = DateTime.UtcNow.AddDays(-10);
         var to = DateTime.UtcNow;
 
-        var suv = new Car { Id = Guid.NewGuid(), Model = "X1", Type = "SUV" };
-        var sedan = new Car { Id = Guid.NewGuid(), Model = "S1", Type = "Sedan" };
-        var hatch = new Car { Id = Guid.NewGuid(), Model = "H1", Type = "Hatch" };
-        var coupe = new Car { Id = Guid.NewGuid(), Model = "C1", Type = "Coupe" };
+        var suv = Car.Restore(Guid.NewGuid(), "X1", "SUV", isActive: true, version: 1);
+        var sedan = Car.Restore(Guid.NewGuid(), "S1", "Sedan", isActive: true, version: 1);
+        var hatch = Car.Restore(Guid.NewGuid(), "H1", "Hatch", isActive: true, version: 1);
+        var coupe = Car.Restore(Guid.NewGuid(), "C1", "Coupe", isActive: true, version: 1);
 
         await _db.Cars.AddRangeAsync(suv, sedan, hatch, coupe);
 

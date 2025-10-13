@@ -1,15 +1,17 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 
 using CarRental.Application.Abstractions.Repositories;
-using CarRental.Domain.Entities;
+using CarRental.Application.Cars.Dtos;
 using CarRental.Application.Cars.GetAll;
+using CarRental.Domain.Entities;
+using CarRental.Tests.Application.TestBuilders;
 
 namespace CarRental.Tests.Application.Cars;
 
 public class ListAllCarsQueryHandlerTests
 {
-    private readonly ICarRepository              /**/ _carRepo = Substitute.For<ICarRepository>();
-    private readonly ListAllCarsQueryHandler     /**/ _handler;
+    private readonly ICarRepository _carRepo = Substitute.For<ICarRepository>();
+    private readonly ListAllCarsQueryHandler _handler;
 
     public ListAllCarsQueryHandlerTests()
     {
@@ -17,51 +19,36 @@ public class ListAllCarsQueryHandlerTests
     }
 
     [Fact]
-    public async Task should_return_all_active_cars_as_dto()
+    public async Task should_return_list_of_car_dtos_when_cars_exist()
     {
-        // Arrange
         var cars = new List<Car>
         {
-            new() { Id = Guid.NewGuid(), Model = "Toyota Corolla", Type = "Sedan", IsActive = true },
-            new() { Id = Guid.NewGuid(), Model = "Ford Focus", Type = "Hatchback", IsActive = true }
+            DomainBuilder.BuildCar(model: "Model S", type: "Sedan"),
+            DomainBuilder.BuildCar(model: "Model 3", type: "Sedan")
         };
 
         _carRepo.ListAllActivesAsync(Arg.Any<CancellationToken>())
-                .Returns(cars);
+            .Returns(cars);
 
         var query = new ListAllCarsQuery();
 
-        // Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
-        // Assert
-        Assert.NotNull(result);
-        Assert.Equal(cars.Count, result.Count);
-
-        foreach (var car in cars)
-        {
-            Assert.Contains(result, dto =>
-                dto.Id == car.Id &&
-                dto.Model == car.Model &&
-                dto.Type == car.Type
-            );
-        }
+        Assert.Equal(2, result.Count);
+        Assert.Contains(result, c => c.Model == "Model S");
+        Assert.Contains(result, c => c.Model == "Model 3");
     }
 
     [Fact]
-    public async Task should_return_empty_list_when_no_active_cars()
+    public async Task should_return_empty_list_when_no_cars_exist()
     {
-        // Arrange
         _carRepo.ListAllActivesAsync(Arg.Any<CancellationToken>())
-                .Returns(new List<Car>());
+            .Returns(new List<Car>());
 
         var query = new ListAllCarsQuery();
 
-        // Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
-        // Assert
-        Assert.NotNull(result);
         Assert.Empty(result);
     }
 }

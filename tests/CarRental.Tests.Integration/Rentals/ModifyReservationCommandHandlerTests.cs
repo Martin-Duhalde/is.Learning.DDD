@@ -2,6 +2,7 @@
 
 using CarRental.Application.Abstractions.Repositories;
 using CarRental.Domain.Entities;
+using CarRental.Tests.Integration.TestBuilders;
 using CarRental.Domain.Exceptions;
 using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Repositories;
@@ -34,11 +35,7 @@ public class ModifyReservationCommandHandlerTests
     public async Task should_modify_reservation_if_new_period_is_available()
     {
         // Arrange
-        var car = new Car
-        {
-            Model = "ModelS",
-            Type = "Sedan"
-        };
+        var car = DomainBuilder.BuildCar(model: "ModelS", type: "Sedan");
 
         var customer = new Customer
         {
@@ -84,8 +81,8 @@ public class ModifyReservationCommandHandlerTests
     public async Task should_modify_reservation_and_change_car_if_new_car_is_available()
     {
         // Arrange
-        var carOld = new Car { Model = "ModelOld", Type = "Sedan" };
-        var carNew = new Car { Model = "ModelNew", Type = "SUV" };
+        var carOld = Car.Restore(Guid.NewGuid(), "ModelOld", "Sedan", isActive: true, version: 1);
+        var carNew = Car.Restore(Guid.NewGuid(), "ModelNew", "SUV", isActive: true, version: 1);
 
         var customer = new Customer { FullName = "Martín", Address = "Argentina" };
 
@@ -128,11 +125,7 @@ public class ModifyReservationCommandHandlerTests
     {
         // Arrange
 
-        var car = new Car
-        {
-            Model = "ModelX",
-            Type = "SUV"
-        };
+        var car = DomainBuilder.BuildCar(model: "ModelX", type: "SUV");
 
         var customer = new Customer
         {
@@ -180,11 +173,7 @@ public class ModifyReservationCommandHandlerTests
     public async Task should_throw_if_end_date_is_before_start_date()
     {
         // Arrange
-        var car = new Car
-        {
-            Model = "ModelX",
-            Type = "SUV"
-        };
+        var car = DomainBuilder.BuildCar(model: "ModelX", type: "SUV");
 
         var customer = new Customer
         {

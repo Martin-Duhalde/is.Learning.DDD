@@ -1,6 +1,7 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 
 using CarRental.Domain.Entities;
+using CarRental.Tests.Integration.TestBuilders;
 using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Repositories;
 using CarRental.Application.Services.GetUpcoming;
@@ -33,8 +34,8 @@ public class GetUpcomingServicesQueryHandlerTests
         var from = DateTime.UtcNow;
         var to = from.AddDays(7);
 
-        var car1 = new Car { Id = Guid.NewGuid(), Model = "ModelA", Type = "SUV" };
-        var car2 = new Car { Id = Guid.NewGuid(), Model = "ModelB", Type = "Sedan" };
+        var car1 = Car.Restore(Guid.NewGuid(), "ModelA", "SUV", isActive: true, version: 1);
+        var car2 = Car.Restore(Guid.NewGuid(), "ModelB", "Sedan", isActive: true, version: 1);
 
         await _db.Cars.AddRangeAsync(car1, car2);
 
@@ -66,8 +67,8 @@ public class GetUpcomingServicesQueryHandlerTests
         var from = DateTime.UtcNow;
         var to = from.AddDays(7);
 
-        var car1 = new Car { Id = Guid.NewGuid(), Model = "ModelA", Type = "SUV" };
-        var car2 = new Car { Id = Guid.NewGuid(), Model = "ModelB", Type = "Sedan" };
+        var car1 = Car.Restore(Guid.NewGuid(), "ModelA", "SUV", isActive: true, version: 1);
+        var car2 = Car.Restore(Guid.NewGuid(), "ModelB", "Sedan", isActive: true, version: 1);
 
         await _db.Cars.AddRangeAsync(car1, car2);
 

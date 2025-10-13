@@ -50,7 +50,7 @@ public class EfRentalRepository : EfRepository<Rental>, IRentalRepository
         return await _db.Rentals.Where(r =>
                                        r.StartDate.Date >= weekAgo &&
                                        r.StartDate.Date <= today)
-                                .ToListAsync(cancellationToken);
+                                 .ToListAsync(cancellationToken);
     }
 
     public async Task<List<Rental>> ListCancelledAsync(DateTime from, DateTime to, CancellationToken ct = default)
@@ -59,7 +59,7 @@ public class EfRentalRepository : EfRepository<Rental>, IRentalRepository
                                        r.RentalStatus == RentalStatus.Cancelled &&
                                        r.CancelledAt >= from &&
                                        r.CancelledAt <= to)
-                                .ToListAsync(ct);
+                                 .ToListAsync(ct);
     }
 
     public async Task<int> CountCancelledAsync(DateTime from, DateTime to, CancellationToken ct = default)

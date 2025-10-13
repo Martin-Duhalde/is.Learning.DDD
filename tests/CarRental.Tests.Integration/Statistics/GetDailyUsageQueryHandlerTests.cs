@@ -1,6 +1,7 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 
 using CarRental.Domain.Entities;
+using CarRental.Tests.Integration.TestBuilders;
 using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Repositories;
 using CarRental.Application.Statistics.GetDailyUsage;
@@ -34,9 +35,9 @@ public class GetDailyUsageQueryHandlerTests
         // Arrange
         var today   /**/ = DateTime.UtcNow.Date;
 
-        var car1    /**/ = new Car { Id = Guid.NewGuid(), Model = "Model A", Type = "SUV" };
-        var car2    /**/ = new Car { Id = Guid.NewGuid(), Model = "Model B", Type = "Sedan" };
-        var car3    /**/ = new Car { Id = Guid.NewGuid(), Model = "Model C", Type = "Hatch" };
+        var car1    /**/ = Car.Restore(Guid.NewGuid(), "Model A", "SUV", isActive: true, version: 1);
+        var car2    /**/ = Car.Restore(Guid.NewGuid(), "Model B", "Sedan", isActive: true, version: 1);
+        var car3    /**/ = Car.Restore(Guid.NewGuid(), "Model C", "Hatch", isActive: true, version: 1);
 
         await _db.Cars.AddRangeAsync(car1, car2, car3);
 

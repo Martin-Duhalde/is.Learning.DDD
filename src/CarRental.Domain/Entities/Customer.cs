@@ -1,4 +1,4 @@
-/// MIT License © 2025 Martín Duhalde + ChatGPT
+/// MIT License Â© 2025 MartÃ­n Duhalde + ChatGPT
 
 namespace CarRental.Domain.Entities;
 
@@ -9,5 +9,5 @@ public class Customer : IEntity
     public string   /**/ Address    /**/ { get; set; } = string.Empty;
     public string   /**/ UserId     /**/ { get; set; } = string.Empty!; /// IdentityUser Relationship
     public bool     /**/ IsActive   /**/ { get; set; } = true;          /// IEntity (logical delete)
-    public int      /**/ Version    /**/ { get; set; } = 1;             /// IEntity: Control de concurrencia con versión incremental
+    public int      /**/ Version    /**/ { get; set; } = 1;             /// IEntity: Control de concurrencia con versiÃ³n incremental
 }

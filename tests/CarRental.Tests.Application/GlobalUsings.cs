@@ -3,3 +3,5 @@
 /// Global usings for Layer: Test.UseCases
 /// 
 global using NSubstitute;
+
+global using CarRental.Tests.Application.TestBuilders;

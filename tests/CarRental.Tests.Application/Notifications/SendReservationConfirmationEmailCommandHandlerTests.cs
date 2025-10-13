@@ -35,11 +35,7 @@ public class SendReservationConfirmationEmailCommandHandlerTests
             FullName   /**/ = "John Doe",
             UserId     /**/ = "user-123"
         };
-        var car        /**/ = new Car
-        {
-            Model      /**/ = "Model S",
-            Type       /**/ = "Sedan"
-        };
+        var car        /**/ = Car.Restore(Guid.NewGuid(), "Model S", "Sedan", isActive: true, version: 1);
         var rental     /**/ = new Rental
         {
             Id         /**/ = rentalId,
@@ -127,7 +123,7 @@ public class SendReservationConfirmationEmailCommandHandlerTests
         {
             Id = rentalId,
             Customer = null,
-            Car = new Car { Model = "Model X", Type = "SUV" }
+            Car = Car.Restore(Guid.NewGuid(), "Model X", "SUV", isActive: true, version: 1)
         };
 
         _rentalRepo.GetByIdWithDetailsAsync(rentalId, Arg.Any<CancellationToken>())

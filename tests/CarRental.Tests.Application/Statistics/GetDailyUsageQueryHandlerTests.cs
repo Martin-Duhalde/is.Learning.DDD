@@ -43,9 +43,9 @@ public class GetDailyUsageQueryHandlerTests
 
         var cars            /**/ = new List<Car>
         {
-            new Car { Id = Guid.NewGuid(), Model = "ModelA", Type = "SUV" },
-            new Car { Id = Guid.NewGuid(), Model = "ModelB", Type = "Sedan" },
-            new Car { Id = Guid.NewGuid(), Model = "ModelC", Type = "Hatch" }
+            Car.Restore(Guid.NewGuid(), "ModelA", "SUV", isActive: true, version: 1),
+            Car.Restore(Guid.NewGuid(), "ModelB", "Sedan", isActive: true, version: 1),
+            Car.Restore(Guid.NewGuid(), "ModelC", "Hatch", isActive: true, version: 1)
         };
 
         _rentalRepo /**/ .ListLast7DaysAsync    /**/ (Arg.Any<CancellationToken>()).Returns(rentals);

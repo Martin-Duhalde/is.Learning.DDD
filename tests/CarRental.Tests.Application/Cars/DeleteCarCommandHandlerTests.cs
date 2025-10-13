@@ -24,7 +24,7 @@ public class DeleteCarCommandHandlerTests
     {
         // Arrange
         var carId = Guid.NewGuid();
-        var car = new Car { Id = carId, IsActive = true };
+        var car = Car.Restore(carId, "Model", "Type", isActive: true, version: 1);
 
         _carRepository.GetActiveByIdAsync(carId, Arg.Any<CancellationToken>())
                       .Returns(car);
@@ -60,7 +60,7 @@ public class DeleteCarCommandHandlerTests
     {
         // Arrange
         var carId = Guid.NewGuid();
-        var inactiveCar = new Car { Id = carId, IsActive = false };
+        var inactiveCar = Car.Restore(carId, "Model", "Type", isActive: false, version: 1);
 
         // Simulamos que GetActiveByIdAsync no retorna autos inactivos, por eso aquí devolvemos null:
         _carRepository.GetActiveByIdAsync(carId, Arg.Any<CancellationToken>())
@@ -81,7 +81,7 @@ public class DeleteCarCommandHandlerTests
     {
         // Arrange
         var carId = Guid.NewGuid();
-        var car = new Car { Id = carId, IsActive = true };
+        var car = Car.Restore(carId, "Model", "Type", isActive: true, version: 1);
 
         _carRepository.GetActiveByIdAsync(carId, Arg.Any<CancellationToken>())
                       .Returns(car);

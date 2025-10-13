@@ -2,6 +2,7 @@
 
 using CarRental.Application.Abstractions.Interfaces;
 using CarRental.Domain.Entities;
+using CarRental.Tests.Integration.TestBuilders;
 using CarRental.Domain.Exceptions;
 using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Repositories;
@@ -57,12 +58,7 @@ public class SendReservationConfirmationEmailCommandHandlerTests
             UserId = customerUserId
         };
 
-        var car = new Car
-        {
-            Id = Guid.NewGuid(),
-            Model = "Model S",
-            Type = "Sedan"
-        };
+        var car = DomainBuilder.BuildCar(model: "Model S", type: "Sedan");
 
         var rental = new Rental
         {
@@ -124,7 +120,7 @@ public class SendReservationConfirmationEmailCommandHandlerTests
             StartDate = DateTime.UtcNow,
             EndDate = DateTime.UtcNow.AddDays(1),
             Customer = new Customer { FullName = "John Doe", UserId = "" },
-            Car = new Car { Model = "Model Y", Type = "Sedan" }
+            Car = Car.Restore(Guid.NewGuid(), "Model Y", "Sedan", isActive: true, version: 1)
         };
 
         await _db.Rentals.AddAsync(rental);
@@ -145,7 +141,7 @@ public class SendReservationConfirmationEmailCommandHandlerTests
             StartDate = DateTime.UtcNow,
             EndDate = DateTime.UtcNow.AddDays(1),
             Customer = new Customer { FullName = "Alice", UserId = "user-404" },
-            Car = new Car { Model = "Model Z", Type = "Hatch" }
+            Car = Car.Restore(Guid.NewGuid(), "Model Z", "Hatch", isActive: true, version: 1)
         };
 
         await _db.Rentals.AddAsync(rental);
@@ -170,7 +166,7 @@ public class SendReservationConfirmationEmailCommandHandlerTests
             StartDate = DateTime.UtcNow,
             EndDate = DateTime.UtcNow.AddDays(1),
             Customer = new Customer { FullName = "Bob", UserId = "user-123" },
-            Car = new Car { Model = "Model C", Type = "Coupe" }
+            Car = Car.Restore(Guid.NewGuid(), "Model C", "Coupe", isActive: true, version: 1)
         };
 
         await _db.Rentals.AddAsync(rental);

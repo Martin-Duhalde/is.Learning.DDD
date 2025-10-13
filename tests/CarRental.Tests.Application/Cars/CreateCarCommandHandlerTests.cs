@@ -51,7 +51,7 @@ public class CreateCarCommandHandlerTests
             Type:  /**/ "Sedan"
         );
 
-        var existing = new Car { Model = command.Model, Type = command.Type, IsActive = true };
+        var existing = Car.Restore(Guid.NewGuid(), command.Model, command.Type, isActive: true, version: 1);
         _carRepository.FindByModelAndTypeAsync(command.Model, command.Type, Arg.Any<CancellationToken>())
                       .Returns(new List<Car> { existing });
 
@@ -73,8 +73,8 @@ public class CreateCarCommandHandlerTests
 
         var existingCars = new List<Car>
         {
-            new() { Model = command.Model, Type = command.Type, IsActive = true },
-            new() { Model = command.Model, Type = command.Type, IsActive = true }
+            Car.Restore(Guid.NewGuid(), command.Model, command.Type, isActive: true, version: 1),
+            Car.Restore(Guid.NewGuid(), command.Model, command.Type, isActive: true, version: 1)
         };
 
         _carRepository.FindByModelAndTypeAsync(command.Model, command.Type, Arg.Any<CancellationToken>())

@@ -8,6 +8,9 @@
 
 
 using CarRental.Domain.Entities;
+using CarRental.Tests.Functional.TestBuilders;
+using CarRental.Tests.Functional.TestBuilders;
+using CarRental.Tests.Functional.Rentals;
 using CarRental.Infrastructure.Databases;
 using CarRental.Tests.Functional.Common;
 using CarRental.Application.Auth.Dtos;
@@ -36,12 +39,7 @@ public class RentalRegisterAndCancelTests(CustomWebApplicationFactory<Program> f
         {
             var db = scope.ServiceProvider.GetRequiredService<CarRentalDbContext>();
 
-            var car = new Car
-            {
-                Id = Guid.NewGuid(),
-                Type = "SUV",
-                Model = "ModelX"
-            };
+            var car = DomainBuilder.BuildCar();
 
             db.Cars.Add(car);
             await db.SaveChangesAsync();

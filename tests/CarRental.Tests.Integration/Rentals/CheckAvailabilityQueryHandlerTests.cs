@@ -1,6 +1,7 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 
 using CarRental.Domain.Entities;
+using CarRental.Tests.Integration.TestBuilders;
 using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Services;
 using CarRental.Application.Rentals.CheckAvailability;
@@ -35,9 +36,9 @@ public class CheckAvailabilityQueryHandlerTests
         var startDate           /**/ = DateTime.UtcNow.AddDays(1);
         var endDate             /**/ = DateTime.UtcNow.AddDays(3);
 
-        var matchingCar1        /**/ = new Car { Id = Guid.NewGuid(), Type = "SUV", Model = "ModelX" };
-        var matchingCar2        /**/ = new Car { Id = Guid.NewGuid(), Type = "SUV", Model = "ModelX" };
-        var nonMatchingCar      /**/ = new Car { Id = Guid.NewGuid(), Type = "Sedan", Model = "Another" };
+        var matchingCar1        /**/ = Car.Restore(Guid.NewGuid(), "ModelX", "SUV", isActive: true, version: 1);
+        var matchingCar2        /**/ = Car.Restore(Guid.NewGuid(), "ModelX", "SUV", isActive: true, version: 1);
+        var nonMatchingCar      /**/ = Car.Restore(Guid.NewGuid(), "Another", "Sedan", isActive: true, version: 1);
 
         await _db.Cars.AddRangeAsync(matchingCar1, matchingCar2, nonMatchingCar);
 

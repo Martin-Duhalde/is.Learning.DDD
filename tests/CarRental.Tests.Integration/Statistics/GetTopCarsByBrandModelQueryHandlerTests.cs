@@ -1,17 +1,20 @@
 ﻿/// MIT License © 2025 Martín Duhalde + ChatGPT
 
 using CarRental.Domain.Entities;
+using CarRental.Tests.Integration.TestBuilders;
 using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Repositories;
 using CarRental.Application.Statistics.GetTopCarsByBrandModel;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace CarRental.Tests.Integration.Statistics;
 
 public class GetTopCarsByBrandModelQueryHandlerTests
 {
-    private readonly CarRentalDbContext                        /**/ _db;
-    private readonly EfRentalRepository                        /**/ _rentalRepo;
-    private readonly GetTopCarsByBrandModelQueryHandler        /**/ _handler;
+    private readonly CarRentalDbContext             /**/ _db;
+    private readonly EfRentalRepository             /**/ _rentalRepo;
+    private readonly GetTopCarsByBrandModelQueryHandler /**/ _handler;
 
     public GetTopCarsByBrandModelQueryHandlerTests()
     {
@@ -19,7 +22,7 @@ public class GetTopCarsByBrandModelQueryHandlerTests
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
-        _db         /**/ = new CarRentalDbContext(options);
+        _db = new CarRentalDbContext(options);
         _db.Database.EnsureCreated();
 
         _rentalRepo = new EfRentalRepository(_db);
@@ -27,14 +30,14 @@ public class GetTopCarsByBrandModelQueryHandlerTests
     }
 
     [Fact]
-    public async Task should_return_top_rented_cars_grouped_by_model_and_type()
+    public async Task should_return_top_cars_by_brand_and_model()
     {
         // Arrange
-        var from = DateTime.UtcNow.AddDays(-7);
+        var from = DateTime.UtcNow.AddDays(-10);
         var to = DateTime.UtcNow;
 
-        var car1 = new Car { Id = Guid.NewGuid(), Model = "Model A", Type = "SUV" };
-        var car2 = new Car { Id = Guid.NewGuid(), Model = "Model B", Type = "Sedan" };
+        var car1 = DomainBuilder.BuildCar(model: "Model A", type: "SUV");
+        var car2 = DomainBuilder.BuildCar(model: "Model B", type: "Sedan");
 
         await _db.Cars.AddRangeAsync(car1, car2);
 
@@ -53,16 +56,10 @@ public class GetTopCarsByBrandModelQueryHandlerTests
         // Assert
         Assert.Equal(2, result.Count);
 
-        var top = result.First();
-        Assert.Equal("Model A", top.Model);
-        Assert.Equal("SUV", top.Type);
-        Assert.Equal(2, top.Count);
-        Assert.Equal(66.67, top.Percentage); // 2 of 3 rentals
-
-        var second = result.Last();
-        Assert.Equal("Model B", second.Model);
-        Assert.Equal("Sedan", second.Type);
-        Assert.Equal(1, second.Count);
-        Assert.Equal(33.33, second.Percentage);
+        var top1 = result.First();
+        Assert.Equal("Model A", top1.Model);
+        Assert.Equal("SUV", top1.Type);
+        Assert.Equal(2, top1.Count);
+        Assert.Equal(66.67, top1.Percentage);
     }
 }

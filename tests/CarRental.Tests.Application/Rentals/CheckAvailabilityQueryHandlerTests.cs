@@ -23,12 +23,10 @@ public class CheckAvailabilityQueryHandlerTests
         var start   /**/ = DateTime.UtcNow.AddDays(1);
         var end     /**/ = DateTime.UtcNow.AddDays(3);
 
-        var car1 = new Car { Id = Guid.NewGuid(), Model = "ModelX", Type = "SUV" };
-        var car2 = new Car { Id = Guid.NewGuid(), Model = "ModelX", Type = "SUV" };
-        var car3 = new Car { Id = Guid.NewGuid(), Model = "Another", Type = "Sedan" };
+        var car1 = Car.Restore(Guid.NewGuid(), "ModelX", "SUV", isActive: true, version: 1);
 
         _availabilityService.ListAvailableAsync("SUV", "ModelX", start, end, Arg.Any<CancellationToken>())
-            .Returns([car1]);
+            .Returns(new[] { car1 });
 
         var query = new CheckAvailabilityQuery(start, end, "SUV", "ModelX");
 

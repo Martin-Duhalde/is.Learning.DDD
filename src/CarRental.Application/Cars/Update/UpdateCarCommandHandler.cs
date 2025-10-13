@@ -26,8 +26,7 @@ public class UpdateCarCommandHandler : IRequestHandler<UpdateCarCommand, Unit>
         if (request.Version != car.Version)
             throw new ConcurrencyConflictException("The car has been modified by another user or process.");
         
-        car.Model   /**/ = request.Model;
-        car.Type    /**/ = request.Type;
+        car.UpdateDetails(request.Model, request.Type);
 
         await _carRepository.UpdateAsync(car, cancellationToken);
 

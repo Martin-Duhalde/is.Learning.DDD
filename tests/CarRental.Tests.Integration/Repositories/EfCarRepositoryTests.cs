@@ -1,4 +1,5 @@
 ﻿using CarRental.Domain.Entities;
+using CarRental.Tests.Integration.TestBuilders;
 using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Repositories;
 
@@ -21,7 +22,7 @@ public class EfCarRepositoryTests
     public async Task should_return_true_when_car_is_available()
     {
         using var context = new CarRentalDbContext(_options);
-        var car = new Car { Id = Guid.NewGuid(), Model = "ModelX", Type = "SUV", IsActive = true };
+        var car = Car.Restore(Guid.NewGuid(), "ModelX", "SUV", isActive: true, version: 1);
         context.Cars.Add(car);
         await context.SaveChangesAsync();
 
@@ -36,7 +37,7 @@ public class EfCarRepositoryTests
     public async Task should_return_false_when_car_has_conflicting_rental()
     {
         using var context = new CarRentalDbContext(_options);
-        var car = new Car { Id = Guid.NewGuid(), Model = "ModelY", Type = "Sedan", IsActive = true };
+        var car = Car.Restore(Guid.NewGuid(), "ModelY", "Sedan", isActive: true, version: 1);
         var rental = new Rental
         {
             Id = Guid.NewGuid(),
@@ -62,13 +63,7 @@ public class EfCarRepositoryTests
     public async Task should_return_empty_when_model_and_type_do_not_match()
     {
         using var context = new CarRentalDbContext(_options);
-        context.Cars.Add(new Car
-        {
-            Id = Guid.NewGuid(),
-            Model = "Civic",
-            Type = "Hatchback",
-            IsActive = true
-        });
+        context.Cars.Add(Car.ForTesting(model: "Civic", type: "Hatchback", isActive: true));
         await context.SaveChangesAsync();
 
         var repo = new EfCarRepository(context);
@@ -83,9 +78,9 @@ public class EfCarRepositoryTests
     {
         using var context = new CarRentalDbContext(_options);
         context.Cars.AddRange(
-            new Car { Id = Guid.NewGuid(), Model = "Civic", Type = "Hatchback", IsActive = true },
-            new Car { Id = Guid.NewGuid(), Model = "Civic", Type = "Hatchback", IsActive = true },
-            new Car { Id = Guid.NewGuid(), Model = "Civic", Type = "Hatchback", IsActive = false } // no activo
+            Car.Restore(Guid.NewGuid(), "Civic", "Hatchback", isActive: true, version: 1),
+            Car.Restore(Guid.NewGuid(), "Civic", "Hatchback", isActive: true, version: 1),
+            Car.Restore(Guid.NewGuid(), "Civic", "Hatchback", isActive: false, version: 1) // no activo
         );
         await context.SaveChangesAsync();
 

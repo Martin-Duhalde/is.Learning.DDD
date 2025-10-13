@@ -25,9 +25,9 @@ public class GetRentalStatsQueryHandlerTests
 
         var rentals = new List<Rental>
         {
-            new() { Car = new Car { Type = "SUV" } },
-            new() { Car = new Car { Type = "SUV" } },
-            new() { Car = new Car { Type = "Sedan" } }
+            new() { Car = Car.Restore(Guid.NewGuid(), "Model-SUV-1", "SUV", isActive: true, version: 1) },
+            new() { Car = Car.Restore(Guid.NewGuid(), "Model-SUV-2", "SUV", isActive: true, version: 1) },
+            new() { Car = Car.Restore(Guid.NewGuid(), "Model-Sedan-1", "Sedan", isActive: true, version: 1) }
         };
 
         _rentalRepo.ListActivesBetweenDatesAsync(from, to, Arg.Any<CancellationToken>())

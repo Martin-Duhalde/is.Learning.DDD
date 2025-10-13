@@ -1,4 +1,5 @@
 ﻿using CarRental.Domain.Entities;
+using CarRental.Tests.Integration.TestBuilders;
 using CarRental.Infrastructure.Databases;
 using CarRental.Infrastructure.Repositories;
 
@@ -22,8 +23,8 @@ public class EfServiceRepositoryTests
     {
         using var context = new CarRentalDbContext(_options);
 
-        var car1 = new Car { Id = Guid.NewGuid(), Model = "Toyota", Type = "Sedan" };
-        var car2 = new Car { Id = Guid.NewGuid(), Model = "Ford", Type = "SUV" };
+        var car1 = Car.Restore(Guid.NewGuid(), "Toyota", "Sedan", isActive: true, version: 1);
+        var car2 = Car.Restore(Guid.NewGuid(), "Ford", "SUV", isActive: true, version: 1);
 
         context.Cars.AddRange(car1, car2);
         context.Services.AddRange(
@@ -48,7 +49,7 @@ public class EfServiceRepositoryTests
     {
         using var context = new CarRentalDbContext(_options);
 
-        var car = new Car { Id = Guid.NewGuid(), Model = "Chevy", Type = "Hatch" };
+        var car = Car.Restore(Guid.NewGuid(), "Chevy", "Hatch", isActive: true, version: 1);
         var date = DateTime.Today;
 
         context.Cars.Add(car);

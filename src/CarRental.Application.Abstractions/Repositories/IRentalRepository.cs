@@ -9,13 +9,12 @@ namespace CarRental.Application.Abstractions.Repositories;
 /// </summary>
 public interface IRentalRepository : IRepository<Rental>
 {
-
-    Task<bool>          /**/ ExistsAsync                    /**/ (Guid carId, DateTime start, DateTime end, CancellationToken cancellationToken = default);
-    Task<Rental?>       /**/ GetByIdWithDetailsAsync        /**/ (Guid rentalId, CancellationToken cancellationToken = default);
-    Task<List<Rental>>  /**/ ListActivesBetweenDatesAsync   /**/ (DateTime from, DateTime to, CancellationToken cancellationToken);
-    Task<List<Rental>>  /**/ GetRentalsByCustomerIdAsync    /**/ (Guid customerId, CancellationToken cancellationToken = default);
-    Task<List<Rental>>  /**/ ListLast7DaysAsync             /**/ (CancellationToken cancellationToken = default);
-    Task<List<Rental>>  /**/ ListCancelledAsync             /**/ (DateTime from, DateTime to, CancellationToken ct = default);
-    Task<int>           /**/ CountCancelledAsync            /**/ (DateTime from, DateTime to, CancellationToken ct = default);
-    Task                /**/ CancelAsync                    /**/ (Guid rentalId, CancellationToken ct = default);
+    Task<bool> ExistsAsync(Guid carId, DateTime start, DateTime end, CancellationToken cancellationToken = default);
+    Task<Rental?> GetByIdWithDetailsAsync(Guid rentalId, CancellationToken cancellationToken = default);
+    Task<List<Rental>> ListActivesBetweenDatesAsync(DateTime from, DateTime to, CancellationToken cancellationToken);
+    Task<List<Rental>> GetRentalsByCustomerIdAsync(Guid customerId, CancellationToken cancellationToken = default);
+    Task<List<Rental>> ListLast7DaysAsync(CancellationToken cancellationToken = default);
+    Task<List<Rental>> ListCancelledAsync(DateTime from, DateTime to, CancellationToken ct = default);
+    Task<int> CountCancelledAsync(DateTime from, DateTime to, CancellationToken ct = default);
+    Task CancelAsync(Guid rentalId, CancellationToken ct = default);
 }
