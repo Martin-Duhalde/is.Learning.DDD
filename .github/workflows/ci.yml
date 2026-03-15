@@ -51,7 +51,7 @@ jobs:
       run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
     - name: 🧪 Run Unit Tests
-      run: dotnet test tests/CarRental.Tests.UseCases/CarRental.Tests.UseCases.csproj --configuration Release --no-build --collect:"XPlat Code Coverage"
+      run: dotnet test tests/CarRental.Tests.Application/CarRental.Tests.Application.csproj --configuration Release --no-build --collect:"XPlat Code Coverage"
 
     - name: 🔗 Run Integration Tests
       run: dotnet test tests/CarRental.Tests.Integration/CarRental.Tests.Integration.csproj --configuration Release --no-build --collect:"XPlat Code Coverage"
